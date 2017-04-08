@@ -39,6 +39,13 @@ function getMerchants(callback) {
     });
 }
 
+function getMerchant(id, callback) {
+    request('http://api.reimaginebanking.com/merchants/' + id + '?key=' + apiKey, function (err, resp, body) {
+        var x = JSON.parse(body);
+        callback(x);
+    });
+}
+
 function getTransactions(callback) {
     var transactions = [];
 
@@ -117,6 +124,7 @@ module.exports = {
     getAccounts:getAccounts,
     getAccountByCustomer:getAccountByCustomer,
     getMerchants:getMerchants,
+    getMerchant: getMerchant,
     getTransactions:getTransactions,
     createCustomer:createCustomer,
     createMerchant:createMerchant,

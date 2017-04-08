@@ -4,6 +4,8 @@
 
 
 //Display all these, sort by account number
+var pre = require('../services/preload');
+var nessie = require('../services/nessie');
 function getSampleCluster() {
     var p1 = {
         _id: '123456789012345678901234',
@@ -48,12 +50,38 @@ function getSampleCluster() {
         medium: "balance",
         accountNumber: "1234567890123477",
         merchantName: "Bobs mitten parlor",
-        geocode : {lat: 37.539, lng: -77.40},
+        geoCode: {lat: 37.539, lng: -77.40},
         confirmedFraud : 0,
         dateInSeconds: 74200240802420,
         distanceFromHome: 55.2420
     };
     return [p2, p1, p3];
+}
+
+function findMerchantInfo(p) {
+    var merchantName;
+    var merchantID;
+    var merchantLat;
+    var merchantLon;
+    pre.preload(function (hugeDictionary) {
+        var ks = []
+        for (var k in hugeDictionary['transactions']) {
+            ks.push(k);
+        }
+        for (var i = 0; i < ks.length; i++) {
+            if (p.merchant_id == ks[i]._id) {
+                merchantID = ks[i].customer_id;
+            }
+        }
+        nessie.getMerchant(merchantID, function (merchant) {
+            merchantName = merchant.first_name;
+            merchantLat = merchant.geocode.lat;
+            merchantLon = merchant.geocode.lng;
+        })
+        var x = [merchantName, merchantLat, merchantLon];
+        console.log(x[0] + " " + x[1] + " " + x[2]);
+        return x;
+    });
 }
 
 function analyze(arrayOfDictionaries){
@@ -94,3 +122,7 @@ module.exports = {
     analyze: analyze,
     getSampleCluster: getSampleCluster
 };
+var x = getSampleCluster();
+console.log(x);
+var y = findMerchantInfo(x[2]);
+
