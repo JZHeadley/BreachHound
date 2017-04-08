@@ -5,6 +5,9 @@ var express = require('express');
 var request = require('request');
 var apiKey = "b3fcbcb25a34e25b192977369a20b3cf";
 var app = express();
+var querystring = require('querystring');
+var http = require('http');
+var fs = require('fs');
 
 function getCustomers(callback) {
     request('http://api.reimaginebanking.com/customers?key=' + apiKey, function (err, resp, body) {
@@ -12,8 +15,6 @@ function getCustomers(callback) {
         callback(x);
     });
 }
-
-
 
 function getAccounts(callback) {
     request('http://api.reimaginebanking.com/accounts?key=' + apiKey, function (err, resp, body) {
@@ -38,18 +39,32 @@ function getMerchants(callback) {
 }
 
 function getTransactions(callback) {
+    var transactions = [];
 
     getMerchants(function (returnVal) {
         for(var i =0; i < returnVal.data.length; i++)
         {
             request('http://api.reimaginebanking.com/merchants/'+returnVal.data[i]._id+'/purchases?key=' + apiKey, function (err, resp, body) {
-                console.log(JSON.parse(body));
+                transactions.push(JSON.parse(body));
+                //console.log(JSON.parse(body));
             });
         }
+        callback(transactions);
     });
-
-
 }
+
+function createCustomer(custData) {
+    request({
+        url: "http://api.reimaginebanking.com/customers?key=b3fcbcb25a34e25b192977369a20b3cf",
+        method: "POST",
+        json: true,
+        body: custData
+    }, function (error, response, body){
+        console.log(response);
+    });
+}
+
+
 
 module.exports = {
     getCustomers: getCustomers,
@@ -57,4 +72,4 @@ module.exports = {
     getAccountByCustomer:getAccountByCustomer,
     getMerchants:getMerchants,
     getTransactions:getTransactions
-}
+};
