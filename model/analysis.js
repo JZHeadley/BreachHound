@@ -61,26 +61,18 @@ function convertDate(date) {
 
 function findMerchantInfo(p) {
     var merchantName;
-    var merchantID;
     var merchantLat;
     var merchantLon;
     pre.preload(function (hugeDictionary) {
-        var ks = []
-        for (var k in hugeDictionary['transactions']) {
-            ks.push(k);
-        }
-        for (var i = 0; i < ks.length; i++) {
-            if (p.merchant_id == ks[i]._id) {
-                merchantID = ks[i].customer_id;
-            }
-        }
-        nessie.getMerchant(merchantID, function (merchant) {
+        nessie.getMerchant(p.merchant_id, function (merchant) {
             merchantName = merchant.first_name;
             merchantLat = merchant.geocode.lat;
             merchantLon = merchant.geocode.lng;
         })
-        var x = [merchantName, merchantLat, merchantLon];
-        console.log(x[0] + " " + x[1] + " " + x[2]);
+        var x = [];
+        x.push(merchantName);
+        x.push(merchantLat);
+        x.push(merchantLon);
         return x;
     });
 }

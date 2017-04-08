@@ -135,7 +135,7 @@ function fillAddressPool() {
         address.street_name = split[0].substring(address.street_number.length);
         address.city = split[1];
         address.state = state[0];
-        address.zip = state[1];
+        address.zip = state[1].substring(0, 5);
         addressPool.push(address);
     });
 }

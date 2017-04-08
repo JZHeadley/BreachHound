@@ -33,8 +33,16 @@ function getAccountByCustomer(customerId, callback) {
 }
 
 function getMerchants(callback) {
-    request('http://api.reimaginebanking.com/merchants?key=' + apiKey, function (err, resp, body) {
-        var x = JSON.parse(body);
+    var x
+
+    request('http://api.reimaginebanking.com/merchants?key=' + apiKey + '&page=1', function (err, resp, body) {
+        x = body;
+        for (var i = 2; i <= 223; i++) {
+            request('http://api.reimaginebanking.com/merchants?key=' + apiKey + '&page=' + i, function (err, resp, body) {
+                x = x + "" + body;
+            });
+        }
+        x = JSON.parse(x);
         callback(x);
     });
 }
@@ -68,7 +76,7 @@ function createCustomer(custData, completion) {
         json: true,
         body: custData
     }, function (error, response, body){
-        //console.log("!!!!!!!!!!!" + custData);
+        console.log("asdffasddfas" + JSON.stringify(body));
 
         var id = JSON.parse(JSON.stringify(body)).objectCreated._id;
         console.log("NEW CUST ID: " + id);

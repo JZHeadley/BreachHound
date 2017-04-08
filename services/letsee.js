@@ -2,7 +2,7 @@
  * Created by austin on 4/8/17.
  */
 var dict = require('./preload');
-//var data = require('../model/testData');
+var data = require('../model/testData');
 var nessie = require('./nessie');
 var anal = require('../model/analysis');
 
