@@ -50,7 +50,11 @@ function getSampleCluster() {
     };
     return [p2, p1, p3];
 }
-
+function convertDate(date) {
+    parts = date.split("-")
+    var d = new Date(parts[0], parts[1], part[2]);
+    return d.getTime();
+}
 function analyze(arrayOfDictionaries) {
     console.log("Array of dictionaries:");
     console.log(arrayOfDictionaries);
@@ -78,6 +82,28 @@ var geocoder = NodeGeocoder(options);
 geocoder.geocode('2300 W. Grace St, Richmond, VA 23220', function (err, res) {
     console.log(res[0].longitude);
 });
+
+function getDistanceFromLatLonInKm(coord1, coord2) {
+    lat1 = coord1.lat;
+    lon1 = coord1.lng;
+    lat2 = coord2.lat;
+    lon2 = coord2.lng;
+    var R = 6371; // Radius of the earth in km
+    var dLat = deg2rad(lat2 - lat1);  // deg2rad below
+    var dLon = deg2rad(lon2 - lon1);
+    var a =
+        Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+        Math.cos(deg2rad(lat1)) * Math.cos(deg2rad(lat2)) *
+        Math.sin(dLon / 2) * Math.sin(dLon / 2)
+    ;
+    var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+    var d = R * c; // Distance in km
+    return d;
+}
+
+function deg2rad(deg) {
+    return deg * (Math.PI / 180)
+}
 module.exports = {
     getSampleCluster: getSampleCluster,
     analyze: analyze,
