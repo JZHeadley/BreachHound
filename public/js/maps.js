@@ -7,13 +7,18 @@ function initMap() {
         zoom: 8 // typical is usually 8 or 9
     });
 
-/*Centers maps at sets of points instead of one, we'll discuss
-    var locations = [
-        ['DESCRIPTION', 41.926979,12.517385, 3],
-        ['DESCRIPTION', 41.914873,12.506486, 2],
-        ['DESCRIPTION', 41.918574,12.507201, 1]
-    ];
-
+//Centers maps at sets of points instead of one, we'll discuss
+    var locations = [];
+    for (i = 0; i < purchases.length; i++){
+        location ={
+            des : purchases[i].merchantName,
+            gps : purchases[i].geoCode,
+            id : i
+        };
+        locations.push(location);
+    }
+    console.log(locations)
+/*
 //create empty LatLngBounds object
     var bounds = new google.maps.LatLngBounds();
     var infowindow = new google.maps.InfoWindow();
@@ -69,8 +74,13 @@ geocodeAddress(geocoder, map);
 
 /* Close when someone clicks on the "x" symbol inside the overlay */
 function closeNav() {
-    document.getElementById("tableOverlay").style.width = "0%";
+    document.getElementById("tableOverlay").style.width = "40%";
 }
+
+function openNav() {
+    document.getElementById("tableOverlay").style.width = "100%";
+}
+
 
 
 

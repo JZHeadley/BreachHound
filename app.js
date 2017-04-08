@@ -11,7 +11,7 @@ var maps = require('./routes/maps');
 var table = require('./routes/table');
 
 var testData = require('./model/testData');
-testData.fillAddressPool();
+
 
 var app = express();
 
@@ -51,3 +51,4 @@ app.use(function (err, req, res, next) {
 });
 
 module.exports = app;
+

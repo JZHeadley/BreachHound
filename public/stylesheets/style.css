@@ -1,14 +1,14 @@
 body {
-  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+    font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
 }
 
 a {
-  color: #00B7FF;
+    color: #00B7FF;
 }
 
 #map {
-  height: 99vh;
-  width: 100%;
+    height: 99vh;
+    width: 100%;
 }
 
 /* The Overlay (background) */
@@ -20,8 +20,8 @@ a {
     z-index: 1; /* Sit on top */
     left: 0;
     top: 0;
-    background-color: rgb(0,0,0); /* Black fallback color */
-    background-color: rgba(0,0,0, 0.9); /* Black w/opacity */
+    background-color: rgb(0, 0, 0); /* Black fallback color */
+    background-color: rgba(0, 0, 0, 0.9); /* Black w/opacity */
     overflow-x: hidden; /* Disable horizontal scroll */
     transition: 0.5s; /* 0.5 second transition effect to slide in or slide down the overlay (height or width, depending on reveal) */
 }
@@ -29,10 +29,9 @@ a {
 /* Position the content inside the overlay */
 .overlay-content {
     position: relative;
-    top: 25%; /* 25% from the top */
+    top: 1%; /* 25% from the top */
     width: 100%; /* 100% width */
     text-align: center; /* Centered text/links */
-    margin-top: 30px; /* 30px top margin to avoid conflict with the close button on smaller screens */
 }
 
 /* The navigation links inside the overlay */
@@ -60,10 +59,47 @@ a {
 
 /* When the height of the screen is less than 450 pixels, change the font-size of the links and position the close button again, so they don't overlap */
 @media screen and (max-height: 450px) {
-    .overlay a {font-size: 20px}
+    .overlay a {
+        font-size: 20px
+    }
+
     .overlay .closebtn {
         font-size: 40px;
         top: 15px;
         right: 35px;
     }
 }
+
+table {
+    font-family: Calibri;
+    font-size: large;
+    width: inherit;
+    height: 100%;
+}
+tr {
+    height: 50px;
+    opacity: .4;
+}
+tr:nth-child(even) {
+    background-color: #818181;
+
+}
+
+tr:nth-child(odd) {
+    background-color: #f1f1f1;
+}
+
+tr:hover {
+    background-color: #e9ecf0;
+    opacity: .7;
+}
+th, th:hover {
+    background-color: aliceblue;
+}
+img{
+    vertical-align: middle;
+    margin-right: 2px;
+    float: right;
+}
+
+
