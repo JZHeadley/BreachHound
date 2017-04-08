@@ -54,7 +54,8 @@ function getTransactions(callback) {
 }
 
 function createCustomer(custData) {
-    custData = JSON.stringify(custData);
+    custData = JSON.stringify(custData)
+    console.log("!!!!!!!!!!!" + custData);
     request({
         url: "http://api.reimaginebanking.com/customers?key="+apiKey,
         method: "POST",
@@ -66,16 +67,24 @@ function createCustomer(custData) {
 }
 
 function createMerchant(merchData) {
+
     var data = {
         code: 0,
         message: "merchant created",
         objectCreated: merchData
     };
+    // console.log("!!!!!!!!!!!!!!!!!!!! "+JSON.stringify(data));
     data = JSON.stringify(data);
+    console.log("!!!!!!!!!!!!!!!!!!!! " + data);
+    //data = JSON.parse(data);
+    console.log("!!!!!!!!!!!!!!!!!!!! " + data);
     request({
         url: "http://api.reimaginebanking.com/merchants?key="+apiKey,
         method: "POST",
         json: true,
+        headers: {
+            "content-type": "application/json",
+        },
         body: data
     }, function (error, response, body){
         console.log(response);

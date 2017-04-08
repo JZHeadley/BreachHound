@@ -14,5 +14,5 @@ dict.preload(function (returnValue) {
     console.log(returnValue['merchants']['57cf75cea73e494d8675ec5b'].geocode);
 
 
-    nessie.createMerchant(data.genNewMerchant());
+    nessie.createCustomer(data.genNewCustomer());
 });
