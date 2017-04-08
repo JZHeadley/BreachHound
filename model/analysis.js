@@ -1,8 +1,3 @@
-/**
- * Created by pjhud on 4/8/2017.
- */
-
-
 //Display all these, sort by account number
 var pre = require('../services/preload');
 var nessie = require('../services/nessie');
@@ -18,8 +13,8 @@ function getSampleCluster() {
         medium: "balance",
         accountNumber: "1234567890123456",  //display
         merchantName: "Joes house of cats", //display
-        geoCode : {lat: 37.53, lng: -77.4},  //use this
-        confirmedFraud : 0,  //color red/yellow
+        geoCode: {lat: 37.53, lng: -77.4},  //use this
+        confirmedFraud: 0,  //color red/yellow
         dateInSeconds: 74200240802420,
         distanceFromHome: 55.2420
     };
@@ -36,8 +31,8 @@ function getSampleCluster() {
         accountNumber: "1234567890123477",
         merchantName: "Joes house of cats",
         distanceFromHome: 55.2420,
-        geoCode : {lat: 37.539, lng: -77.49},
-        confirmedFraud : 1
+        geoCode: {lat: 37.539, lng: -77.49},
+        confirmedFraud: 1
     };
     var p3 = {
         _id: '123456789012345678901236',
@@ -50,13 +45,19 @@ function getSampleCluster() {
         medium: "balance",
         accountNumber: "1234567890123477",
         merchantName: "Bobs mitten parlor",
-        geoCode: {lat: 37.539, lng: -77.40},
-        confirmedFraud : 0,
+        geocode: {lat: 37.539, lng: -77.40},
+        confirmedFraud: 0,
         dateInSeconds: 74200240802420,
         distanceFromHome: 55.2420
     };
     return [p2, p1, p3];
 }
+function convertDate(date) {
+    parts = date.split("-")
+    var d = new Date(parts[0], parts[1], part[2]);
+    return d.getTime();
+}
+function analyze(arrayOfDictionaries) {
 
 function findMerchantInfo(p) {
     var merchantName;
@@ -96,13 +97,6 @@ function distance(p1, p2) {
         return (Math.pow(p1.x - p2.x, 2) + Math.pow(p1.y - p2.y, 2) + Math.pow(((p1.t - p2.t) / 1000), 2))
 }
 
-module.exports = {
-    getSampleCluster: getSampleCluster,
-    analyze: analyze,
-    distance: distance
-};
-
-
 var NodeGeocoder = require('node-geocoder');
 var options = {
     provider: 'google',
@@ -115,12 +109,35 @@ var options = {
 var geocoder = NodeGeocoder(options);
 
 // Using callback
-geocoder.geocode('2300 W. Grace St, Richmond, VA 23220', function(err, res) {
+geocoder.geocode('2300 W. Grace St, Richmond, VA 23220', function (err, res) {
     console.log(res[0].longitude);
 });
+
+function getDistanceFromLatLonInKm(coord1, coord2) {
+    lat1 = coord1.lat;
+    lon1 = coord1.lng;
+    lat2 = coord2.lat;
+    lon2 = coord2.lng;
+    var R = 6371; // Radius of the earth in km
+    var dLat = deg2rad(lat2 - lat1);  // deg2rad below
+    var dLon = deg2rad(lon2 - lon1);
+    var a =
+        Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+        Math.cos(deg2rad(lat1)) * Math.cos(deg2rad(lat2)) *
+        Math.sin(dLon / 2) * Math.sin(dLon / 2)
+    ;
+    var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+    var d = R * c; // Distance in km
+    return d;
+}
+
+function deg2rad(deg) {
+    return deg * (Math.PI / 180)
+}
 module.exports = {
+    getSampleCluster: getSampleCluster,
     analyze: analyze,
-    getSampleCluster: getSampleCluster
+    distance: distance
 };
 var x = getSampleCluster();
 console.log(x);
