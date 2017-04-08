@@ -26,7 +26,7 @@ function randomKey(dict) {
 }
 
 function randomDigits(numDigits) {
-    n = parseInt(Math.random() * Math.pow(10, n));
+    var n = parseInt(Math.random() * Math.pow(10, n));
     return n.toString();
 }
 
@@ -80,7 +80,7 @@ function genNewMerchant() {
         name: randomMerchantName(),
         category: ["Food"], //TODO
         address: addr,
-        geoCode: geoCodeFromAddress(addr)
+        geoCode: geoCodeByAddress(addr)
     };
     merchants[m._id] = m;
     return m;

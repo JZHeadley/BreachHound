@@ -54,8 +54,9 @@ function getTransactions(callback) {
 }
 
 function createCustomer(custData) {
+    custData = JSON.stringify(custData);
     request({
-        url: "http://api.reimaginebanking.com/customers?key=b3fcbcb25a34e25b192977369a20b3cf",
+        url: "http://api.reimaginebanking.com/customers?key="+apiKey,
         method: "POST",
         json: true,
         body: custData
@@ -64,6 +65,49 @@ function createCustomer(custData) {
     });
 }
 
+function createMerchant(merchData) {
+    var data = {
+        code: 0,
+        message: "merchant created",
+        objectCreated: merchData
+    };
+    data = JSON.stringify(data);
+    request({
+        url: "http://api.reimaginebanking.com/merchants?key="+apiKey,
+        method: "POST",
+        json: true,
+        body: data
+    }, function (error, response, body){
+        console.log(response);
+    });
+}
+
+function createAccount(accountData) {
+    accountData = JSON.stringify(accountData);
+    request({
+        url: "http://api.reimaginebanking.com/customers/"+accountData.customer_id+"/accounts?key="+apiKey,
+        method: "POST",
+        json: true,
+        body: accountData
+    }, function (error, response, body){
+        console.log(response);
+    });
+}
+
+function createPurchase(purchData) {
+    purchData = JSON.stringify(purchData);
+    request({
+        url: "http://api.reimaginebanking.com/accounts/"+purchData._id+"/purchases?key="+apiKey,
+        method: "POST",
+        json: true,
+        body: purchData
+    }, function (error, response, body){
+        console.log(response);
+    });
+}
+
+
+
 
 
 module.exports = {
@@ -71,5 +115,9 @@ module.exports = {
     getAccounts:getAccounts,
     getAccountByCustomer:getAccountByCustomer,
     getMerchants:getMerchants,
-    getTransactions:getTransactions
+    getTransactions:getTransactions,
+    createCustomer:createCustomer,
+    createMerchant:createMerchant,
+    createAccount:createAccount,
+    createPurchase:createPurchase
 };
