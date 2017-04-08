@@ -58,7 +58,7 @@ function geoCodeByAddress(address) {
 
 function genNewCustomer() {
     var c = {
-        _id: randomDigits(24),
+        //_id: randomDigits(24),
         first_name: randomName(),
         last_name: randomName(),
         address: randomElement(addressPool)
