@@ -9,6 +9,6 @@ dict.preload(function (returnValue) {
         //console.log(returnValue[i]);
     }
 
-    console.log(((returnValue[0]).value[1]).value.address.street_number);
+    console.log(returnValue['customers']);
     //
 });
