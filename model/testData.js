@@ -22,12 +22,21 @@ function randomElement(arr){
     return arr[index];
 }
 function randomKey(dict) {
-    return randomElement(dict.keySet);
+    //console.log("DICT[1]" + dict['1'].first_name);
+    var ks = []
+    for (var k in dict) {
+        ks.push(k);
+    }
+    //console.log(ks)
+    return randomElement(ks);
 }
 
 function randomDigits(numDigits) {
-    var n = parseInt(Math.random() * Math.pow(10, n));
-    return n.toString();
+    var digs = parseInt(10000 * Math.random()).toString();
+    for (var i = 0; i <= numDigits - 4; i++) {
+        digs = "1" + digs;
+    }
+    return digs;
 }
 
 function randomName() {
@@ -52,7 +61,6 @@ function genNewCustomer() {
         _id: randomDigits(24),
         first_name: randomName(),
         last_name: randomName(),
-        category: ["Food"], //TODO
         address: randomElement(addressPool)
     };
     customers[c._id] = c;
@@ -66,15 +74,15 @@ function genNewAccount() {
         nickname: randomDigits(4),
         rewards: 0,
         balance: 999999999999,
-        account_number: random_digits(24),
+        account_number: randomDigits(24),
         customer_id : randomKey(customers)
     };
-    customers[c._id] = c;
-    return c;
+    accounts[a._id] = a;
+    return a;
 }
 
 function genNewMerchant() {
-    addr = randomElement(addressPool)
+    var addr = randomElement(addressPool)
     var m = {
         _id: randomDigits(24),
         name: randomMerchantName(),
@@ -94,7 +102,7 @@ function genNormalPurchase() {
         merchant_id: randomKey(merchants),
         payer_id: randomKey(accounts),
         purchase_date: "2017-04-18",
-        amount: Math.round(Math.random * 10000)/100,
+        amount: Math.round(Math.random() * 10000)/100,
         status: "completed",
         medium: "balance"
     };
@@ -111,6 +119,14 @@ var testAddress = {
 };
 
 addressPool.push(testAddress)
+
+
+
+
+console.log(genNewCustomer())
+console.log(genNewAccount())
+console.log(genNewMerchant())
+console.log(genNormalPurchase())
 
 module.exports = {
     genNewCustomer: genNewCustomer,
