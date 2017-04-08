@@ -61,15 +61,19 @@ function getTransactions(callback) {
     });
 }
 
-function createCustomer(custData) {
+function createCustomer(custData, completion) {
     request({
         url: "http://api.reimaginebanking.com/customers?key="+apiKey,
         method: "POST",
         json: true,
         body: custData
     }, function (error, response, body){
-        console.log("!!!!!!!!!!!" + custData);
-        console.log(response);
+        //console.log("!!!!!!!!!!!" + custData);
+
+        var id = JSON.parse(JSON.stringify(body)).objectCreated._id;
+        console.log("NEW CUST ID: " + id);
+        completion(id);
+
     });
     pre.preload;
 }
@@ -84,7 +88,7 @@ function createMerchant(merchData) {
         },
         body: data
     }, function (error, response, body){
-        console.log(response);
+        //console.log(response);
     });
     pre.preload;
 }
@@ -97,7 +101,10 @@ function createAccount(accountData) {
         json: true,
         body: accountData
     }, function (error, response, body){
-        console.log(response);
+        console.log("new acct" + JSON.stringify(body));
+        //console.log("new acct id" + JSON.parse(JSON.stringify(body)).objectCreated._id);
+
+        //console.log(response);
     });
     pre.preload;
 }
@@ -110,7 +117,7 @@ function createPurchase(purchData) {
         json: true,
         body: purchData
     }, function (error, response, body){
-        console.log(response);
+        //console.log(response);
     });
     pre.preload;
 }

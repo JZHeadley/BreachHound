@@ -1,6 +1,6 @@
 var addressPool = [];
 var merchants = {};
-var merchantsByState = {};
+var merchantsByZipCode = {};
 var accounts = {};
 var purchases = {};
 var customers = {};
@@ -21,14 +21,14 @@ function randomKey(dict) {
 
 function randomDigits(numDigits) {
     var digs = parseInt(10000 * Math.random()).toString();
-    for (var i = 0; i <= numDigits - 4; i++) {
+    for (var i = 0; i < numDigits - 4; i++) {
         digs = "1" + digs;
     }
     return digs;
 }
 
 
-var names = ["Zach", "William", "Wilson", "John", "Bob"];
+var names = ["Jar2"] ;//["Zach", "William", "Wilson", "John", "Bob"];
 
 function randomName() {
     return randomElement(names);
@@ -63,7 +63,7 @@ function geoCodeByAddress(address) {
 function genNewCustomer() {
     fillAddressPool();
     var c = {
-            _id: randomDigits(24),
+            //_id: randomDigits(24),
             first_name: randomName(),
             last_name: randomName(),
             address: randomElement(addressPool)
@@ -75,7 +75,7 @@ function genNewCustomer() {
 
 function genNewAccount(cust_id) {
     var a = {
-        _id: randomDigits(24),
+        //_id: randomDigits(24),
         type: "Credit Card",
         nickname: randomDigits(4),
         rewards: 0,
@@ -140,23 +140,29 @@ function fillAddressPool() {
     });
 }
 
-console.log(genNewCustomer());
+/*console.log(genNewCustomer());
 console.log(genNewAccount());
 console.log(genNewMerchant());
-console.log(genNormalPurchase());
+console.log(genNormalPurchase());*/
 
 
 var nessie = require('../services/nessie');
 var pre = require('../services/preload');
-
 function update(continuation) {
-
     pre.preload(function (hDic) {
         console.log(hDic['merchants']['57cf75cea73e494d8675ec5b'].geocode);
         merchants = hDic['merchants'];
         customers = hDic['customers'];
         accounts = hDic['accounts'];
         purchases = hDic['purchaces'];
+        for (var m in merchants) {
+            merch = merchants[m];
+            if (merchantsByZipCode[merch.address.zip] == null) {
+                merchantsByZipCode[merch.address.zip] = [merch];
+            } else {
+                merchantsByZipCode[merch.address.zip].push(merch);
+            }
+        }
 
         continuation()
     });
@@ -170,30 +176,32 @@ function createCustomers(n) {
     var newCustomers = [];
     for (var i = 0; i < n; i++) {
         c = genNewCustomer();
-
-        newCustomers.push(c);
+        //newCustomers.push(c);
         console.log(c);
-        nessie.createCustomer(c);
-    }
-
-    update(function() {
-        for (var c in newCustomers) {
-            var a = genNewAccount(c._id);
+        nessie.createCustomer(c, function(id) {
+            var a = genNewAccount(id);
             console.log(a);
             nessie.createAccount(a);
-        }
-        update(doNothing);
-    });
-
-    return newCustomers
+        });
+    }
+    //return newCustomers
 }
-
 createCustomers(3);
 
 
-/*function reload(){
- pre.preload(function ())
- }*/
+/**Display useful zipcodes**/
+update(function(){
+    console.log("TotalMerchants: " + Object.keys(merchants).length);
+    for (var z in merchantsByZipCode) {
+        if (merchantsByZipCode[z].length > 0) {
+            console.log("Zip: " + z + " Count: " + merchantsByZipCode[z].length);
+        }
+    }
+})
+
+//function simulateFraud();
+
+
 
 
 module.exports = {
