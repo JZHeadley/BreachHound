@@ -46,17 +46,15 @@ function geoCodeByAddress(address) {
 
 function genNewCustomer() {
     randomUser('simple')
-        .then((data) = > {
-        var c = {
-            first_name: data.firstName,
-            last_name: data.lastName,
-            address: randomElement(addressPool)
-        }
-        customers[c._id] = c;
-    return c;
-}).
-    catch((err) = > console.err(err)
-)
+        .then((data) => {
+            var c = {
+                first_name: data.firstName,
+                last_name: data.lastName,
+                address: randomElement(addressPool)
+            };
+            customers[c.id] = c;
+            return c;
+        }).catch((err) => console.err(err));
 }
 
 function genNewAccount() {

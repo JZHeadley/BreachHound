@@ -57,7 +57,7 @@ function convertDate(date) {
     var d = new Date(parts[0], parts[1], part[2]);
     return d.getTime();
 }
-function analyze(arrayOfDictionaries) {
+// function analyze(arrayOfDictionaries) {
 
 function findMerchantInfo(p) {
     var merchantName;
@@ -88,19 +88,16 @@ function findMerchantInfo(p) {
 function analyze(arrayOfDictionaries){
     console.log("Array of dictionaries:");
     console.log(arrayOfDictionaries);
-    return;
-
 }
 
 function distance(p1, p2) {
-    if (p1 != undefined && p2 != undefined)
+    if (p1 !== undefined && p2 !== undefined)
         return (Math.pow(p1.x - p2.x, 2) + Math.pow(p1.y - p2.y, 2) + Math.pow(((p1.t - p2.t) / 1000), 2))
 }
 
 var NodeGeocoder = require('node-geocoder');
 var options = {
     provider: 'google',
-
     // Optional depending on the providers
     httpAdapter: 'https', // Default
     apiKey: 'AIzaSyAuPcuo-7oFqieEYb62SmifV4rSGfxgunA', // for Mapquest, OpenCage, Google Premier
@@ -132,7 +129,7 @@ function getDistanceFromLatLonInKm(coord1, coord2) {
 }
 
 function deg2rad(deg) {
-    return deg * (Math.PI / 180)
+    return deg * (Math.PI / 180);
 }
 module.exports = {
     getSampleCluster: getSampleCluster,
@@ -142,4 +139,3 @@ module.exports = {
 var x = getSampleCluster();
 console.log(x);
 var y = findMerchantInfo(x[2]);
-
