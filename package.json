@@ -19,6 +19,7 @@
     "node-geocoder": "^3.16.0",
     "node-http-api": "0.0.1",
     "query-string": "^4.3.2",
+    "random-user": "^2.0.2",
     "serve-favicon": "~2.4.2"
   },
   "devDependencies": {

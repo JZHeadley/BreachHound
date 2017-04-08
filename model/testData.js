@@ -4,7 +4,7 @@ var merchantsByState = {};
 var accounts = {};
 var purchases = {};
 var customers = {};
-
+var randomUser = require('random-user');
 
 function randomElement(arr) {
     var index = parseInt(Math.random() * arr.length);
@@ -45,14 +45,17 @@ function geoCodeByAddress(address) {
 }
 
 function genNewCustomer() {
-    var c = {
-        //_id: randomDigits(24),
-        first_name: randomName(),
-        last_name: randomName(),
-        address: randomElement(addressPool)
-    };
-    customers[c._id] = c;
-    return c;
+    randomUser('simple')
+        .then((data) => {
+            var c = {
+                first_name: data.firstName,
+                last_name: data.lastName,
+                address: randomElement(addressPool)
+            };
+            customers[c._id] = c;
+            return c;
+        })
+        .catch((err) => console.err(err));
 }
 
 function genNewAccount() {
