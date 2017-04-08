@@ -54,14 +54,13 @@ function getTransactions(callback) {
 }
 
 function createCustomer(custData) {
-    custData = JSON.stringify(custData)
-    console.log("!!!!!!!!!!!" + custData);
     request({
         url: "http://api.reimaginebanking.com/customers?key="+apiKey,
         method: "POST",
         json: true,
         body: custData
     }, function (error, response, body){
+        console.log("!!!!!!!!!!!" + custData);
         console.log(response);
     });
 }
