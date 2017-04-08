@@ -64,8 +64,8 @@ var options = {
 var geocoder = NodeGeocoder(options);
 
 // Using callback
-geocoder.geocode('29 champs elysée paris', function(err, res) {
-    console.log(res);
+geocoder.geocode('2300 W. Grace St, Richmond, VA 23220', function(err, res) {
+    console.log(res[0].longitude);
 });
 
 

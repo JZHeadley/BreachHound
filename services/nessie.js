@@ -5,6 +5,7 @@ var express = require('express');
 var request = require('request');
 var apiKey = "b3fcbcb25a34e25b192977369a20b3cf";
 var app = express();
+var pre = ('./preload');
 var querystring = require('querystring');
 var http = require('http');
 var fs = require('fs');
@@ -63,20 +64,10 @@ function createCustomer(custData) {
         console.log("!!!!!!!!!!!" + custData);
         console.log(response);
     });
+    pre.preload;
 }
 
 function createMerchant(merchData) {
-
-    var data = {
-        code: 0,
-        message: "merchant created",
-        objectCreated: merchData
-    };
-    // console.log("!!!!!!!!!!!!!!!!!!!! "+JSON.stringify(data));
-    data = JSON.stringify(data);
-    console.log("!!!!!!!!!!!!!!!!!!!! " + data);
-    //data = JSON.parse(data);
-    console.log("!!!!!!!!!!!!!!!!!!!! " + data);
     request({
         url: "http://api.reimaginebanking.com/merchants?key="+apiKey,
         method: "POST",
@@ -88,6 +79,7 @@ function createMerchant(merchData) {
     }, function (error, response, body){
         console.log(response);
     });
+    pre.preload;
 }
 
 function createAccount(accountData) {
@@ -100,6 +92,7 @@ function createAccount(accountData) {
     }, function (error, response, body){
         console.log(response);
     });
+    pre.preload;
 }
 
 function createPurchase(purchData) {
@@ -112,6 +105,7 @@ function createPurchase(purchData) {
     }, function (error, response, body){
         console.log(response);
     });
+    pre.preload;
 }
 
 
