@@ -130,4 +130,4 @@ module.exports = {
 };
 var x = getSampleCluster();
 console.log(x);
-var y = findMerchantInfo(x[2]);
+// var y = findMerchantInfo(x[2]);

@@ -28,7 +28,7 @@ function randomDigits(numDigits) {
 }
 
 
-var names = ["Jar2"] ;//["Zach", "William", "Wilson", "John", "Bob"];
+var names = ["Jar2"];//["Zach", "William", "Wilson", "John", "Bob"];
 
 function randomName() {
     return randomElement(names);
@@ -48,25 +48,25 @@ function geoCodeByAddress(address) {
 }
 
 /*function genNewCustomer() {
-    randomUser('simple')
-        .then((data) => {
-            var c = {
-                first_name: data.firstName,
-                last_name: data.lastName,
-                address: randomElement(addressPool)
-            };
-            customers[c.id] = c;
-            return c;
-        }).catch((err) => console.err(err));
-}*/
+ randomUser('simple')
+ .then((data) => {
+ var c = {
+ first_name: data.firstName,
+ last_name: data.lastName,
+ address: randomElement(addressPool)
+ };
+ customers[c.id] = c;
+ return c;
+ }).catch((err) => console.err(err));
+ }*/
 
 function genNewCustomer() {
     fillAddressPool();
     var c = {
-            //_id: randomDigits(24),
-            first_name: randomName(),
-            last_name: randomName(),
-            address: randomElement(addressPool)
+        //_id: randomDigits(24),
+        first_name: randomName(),
+        last_name: randomName(),
+        address: randomElement(addressPool)
     };
     customers[c.id] = c;
     return c;
@@ -135,15 +135,15 @@ function fillAddressPool() {
         address.street_name = split[0].substring(address.street_number.length);
         address.city = split[1];
         address.state = state[0];
-        address.zip = state[1].substring(0, 5);
+        address.zip = (state[1] + "").substring(0, 5);
         addressPool.push(address);
     });
 }
 
 /*console.log(genNewCustomer());
-console.log(genNewAccount());
-console.log(genNewMerchant());
-console.log(genNormalPurchase());*/
+ console.log(genNewAccount());
+ console.log(genNewMerchant());
+ console.log(genNormalPurchase());*/
 
 
 var nessie = require('../services/nessie');
@@ -178,7 +178,7 @@ function createCustomers(n) {
         c = genNewCustomer();
         //newCustomers.push(c);
         console.log(c);
-        nessie.createCustomer(c, function(id) {
+        nessie.createCustomer(c, function (id) {
             var a = genNewAccount(id);
             console.log(a);
             nessie.createAccount(a);
@@ -190,7 +190,7 @@ createCustomers(3);
 
 
 /**Display useful zipcodes**/
-update(function(){
+update(function () {
     console.log("TotalMerchants: " + Object.keys(merchants).length);
     for (var z in merchantsByZipCode) {
         if (merchantsByZipCode[z].length > 0) {
@@ -200,8 +200,6 @@ update(function(){
 })
 
 //function simulateFraud();
-
-
 
 
 module.exports = {
