@@ -1,7 +1,3 @@
-/**
- * Created by pjhud on 4/8/2017.
- */
-
 var addressPool = [];
 var merchants = {};
 var merchantsByState = {};
@@ -10,15 +6,8 @@ var purchases = {};
 var customers = {};
 
 
-/*x: Math.random() * 90,
-    y: Math.random() * 90,
-    t: Math.random() * 100000,
-    d: Math.random() * 0.5/Math.random(),
-    m: merchants[parseInt(Math.random() * merchants.length)]*/
-
-
-function randomElement(arr){
-    var index = parseInt(Math.random()*arr.length);
+function randomElement(arr) {
+    var index = parseInt(Math.random() * arr.length);
     return arr[index];
 }
 function randomKey(dict) {
@@ -27,7 +16,6 @@ function randomKey(dict) {
     for (var k in dict) {
         ks.push(k);
     }
-    //console.log(ks)
     return randomElement(ks);
 }
 
@@ -75,13 +63,14 @@ function genNewAccount() {
         rewards: 0,
         balance: 999999999999,
         account_number: randomDigits(24),
-        customer_id : randomKey(customers)
+        customer_id: randomKey(customers)
     };
     accounts[a._id] = a;
     return a;
 }
 
 function genNewMerchant() {
+    fillAddressPool();
     var addr = randomElement(addressPool)
     var m = {
         _id: randomDigits(24),
@@ -102,7 +91,7 @@ function genNormalPurchase() {
         merchant_id: randomKey(merchants),
         payer_id: randomKey(accounts),
         purchase_date: "2017-04-18",
-        amount: Math.round(Math.random() * 10000)/100,
+        amount: Math.round(Math.random() * 10000) / 100,
         status: "completed",
         medium: "balance"
     };
@@ -110,30 +99,40 @@ function genNormalPurchase() {
     return p;
 }
 
-var testAddress = {
-    street_number: "1234",
-    street_name: "Aweseome St.",
-    city: "Richmond",
-    state: "VA",
-    zip: "23220"
-};
+function fillAddressPool() {
+    var fs = require('fs');
+    var address = {};
+    var text = fs.readFileSync(__dirname + "/addresses.txt").toString('utf-8')
+    // console.log(text);
+    var textByLine = text.split("\r\n");
+    // console.log(textByLine);
+    textByLine.forEach(function (line) {
+        address = {};
+        var split = line.split(",");
+        var street = split[0].split(" ");
+        var state = split[2].toString().trim().split(" ");
 
-addressPool.push(testAddress)
+        address.street_number = street[0];
+        address.street_name = split[0].substring(address.street_number.length);
+        address.city = split[1];
+        address.state = state[0];
+        address.zip = state[1];
+        addressPool.push(address);
+    });
+}
 
-
-
-
-console.log(genNewCustomer())
-console.log(genNewAccount())
-console.log(genNewMerchant())
-console.log(genNormalPurchase())
+console.log(genNewCustomer());
+console.log(genNewAccount());
+console.log(genNewMerchant());
+console.log(genNormalPurchase());
 
 module.exports = {
     genNewCustomer: genNewCustomer,
     genNewAccount: genNewAccount,
     genNewMerchant: genNewMerchant,
-    genNormalPurchase: genNormalPurchase
-}
+    genNormalPurchase: genNormalPurchase,
+    fillAddressPool: fillAddressPool,
+};
 
 
 
