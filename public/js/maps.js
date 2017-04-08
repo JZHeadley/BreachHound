@@ -54,7 +54,7 @@ function geocodeAddress(geocoder, resultsMap) {
             var marker = new google.maps.Marker({
                 map: resultsMap,
                 position: results[0].geometry.location,
-                icon: "public/drawables/blueMapMarker.png"
+                icon: "/drawables/blueMapMarker.png"
             });
         } else {
             alert('Geocode was not successful for the following reason: ' + status);
@@ -65,6 +65,13 @@ function geocodeAddress(geocoder, resultsMap) {
 
 var geocoder = new google.maps.Geocoder();
 geocodeAddress(geocoder, map);
+
+
+/* Close when someone clicks on the "x" symbol inside the overlay */
+function closeNav() {
+    document.getElementById("tableOverlay").style.width = "0%";
+}
+
 
 
 

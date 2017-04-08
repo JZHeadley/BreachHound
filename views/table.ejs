@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <script type='text/javascript' src="/js/table.js"></script>
+    <link rel="stylesheet" href="/stylesheets/style.css"/>
+</head>
+<body>
+<a href="/maps"><button id="myButton" class="float-left submit-button" >Change</button></a>
+<div id="table">
+    <script>
+        var table = '';
+        var rows = 2;
+        var cols = 3;
+        for(var r = 0; r < rows; r++){
+            table+='<tr>';
+            for(var c = 0; c < cols; c++){
+                table += '<td>' + c + '</td>';
+            }
+            table+='</tr>';
+        }
+        document.write('<table>'+table+'</table>');
+    </script>
+</div>
+</body>
+</html>
