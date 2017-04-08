@@ -57,8 +57,13 @@ function analyze(arrayOfDictionaries){
 
 }
 
+function distance(p1, p2) {
+    if (p1 != undefined && p2 != undefined)
+        return (Math.pow(p1.x - p2.x, 2) + Math.pow(p1.y - p2.y, 2) + Math.pow(((p1.t - p2.t) / 1000), 2))
+}
 
 module.exports = {
     getSampleCluster: getSampleCluster,
-    analyze: analyze
-}
+    analyze: analyze,
+    distance: distance
+};
