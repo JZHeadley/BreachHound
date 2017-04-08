@@ -90,7 +90,7 @@ function createMerchant(merchData) {
 }
 
 function createAccount(accountData) {
-    accountData = JSON.stringify(accountData);
+    //accountData = JSON.stringify(accountData);
     request({
         url: "http://api.reimaginebanking.com/customers/"+accountData.customer_id+"/accounts?key="+apiKey,
         method: "POST",

@@ -4,7 +4,7 @@ var merchantsByState = {};
 var accounts = {};
 var purchases = {};
 var customers = {};
-var randomUser = require('random-user');
+//var randomUser = require('random-user');
 
 function randomElement(arr) {
     var index = parseInt(Math.random() * arr.length);
@@ -27,8 +27,11 @@ function randomDigits(numDigits) {
     return digs;
 }
 
+
+var names = ["Zach", "William", "Wilson", "John", "Bob"];
+
 function randomName() {
-    return "Bob";
+    return randomElement(names);
 }
 
 function randomMerchantName() {  //TODO
@@ -44,7 +47,7 @@ function geoCodeByAddress(address) {
     return cd;
 }
 
-function genNewCustomer() {
+/*function genNewCustomer() {
     randomUser('simple')
         .then((data) => {
             var c = {
@@ -55,9 +58,22 @@ function genNewCustomer() {
             customers[c.id] = c;
             return c;
         }).catch((err) => console.err(err));
+}*/
+
+function genNewCustomer() {
+    fillAddressPool();
+    var c = {
+            _id: randomDigits(24),
+            first_name: randomName(),
+            last_name: randomName(),
+            address: randomElement(addressPool)
+    };
+    customers[c.id] = c;
+    return c;
 }
 
-function genNewAccount() {
+
+function genNewAccount(cust_id) {
     var a = {
         _id: randomDigits(24),
         type: "Credit Card",
@@ -65,11 +81,12 @@ function genNewAccount() {
         rewards: 0,
         balance: 999999999999,
         account_number: randomDigits(24),
-        customer_id: randomKey(customers)
+        customer_id: cust_id
     };
     accounts[a._id] = a;
     return a;
 }
+
 
 function genNewMerchant() {
     fillAddressPool();
@@ -129,7 +146,50 @@ console.log(genNewMerchant());
 console.log(genNormalPurchase());
 
 
+var nessie = require('../services/nessie');
 var pre = require('../services/preload');
+
+function update(continuation) {
+
+    pre.preload(function (hDic) {
+        console.log(hDic['merchants']['57cf75cea73e494d8675ec5b'].geocode);
+        merchants = hDic['merchants'];
+        customers = hDic['customers'];
+        accounts = hDic['accounts'];
+        purchases = hDic['purchaces'];
+
+        continuation()
+    });
+}
+
+function doNothing() {
+    return;
+}
+
+function createCustomers(n) {
+    var newCustomers = [];
+    for (var i = 0; i < n; i++) {
+        c = genNewCustomer();
+
+        newCustomers.push(c);
+        console.log(c);
+        nessie.createCustomer(c);
+    }
+
+    update(function() {
+        for (var c in newCustomers) {
+            var a = genNewAccount(c._id);
+            console.log(a);
+            nessie.createAccount(a);
+        }
+        update(doNothing);
+    });
+
+    return newCustomers
+}
+
+createCustomers(3);
+
 
 /*function reload(){
  pre.preload(function ())
