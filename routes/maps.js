@@ -1,8 +1,8 @@
 var express = require('express');
 var router = express.Router();
-
-router.get('/', function(req, res, next) {
-    res.render("googleMaps");
+var anal = require('../model/analysis');
+router.get('/', function (req, res, next) {
+    res.render("googleMaps", {purchases: anal.getSampleCluster()});
 });
 
 module.exports = router;

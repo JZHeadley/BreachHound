@@ -1,8 +1,3 @@
-/**
- * Created by pjhud on 4/8/2017.
- */
-
-
 //Display all these, sort by account number
 function getSampleCluster() {
     var p1 = {
@@ -16,8 +11,8 @@ function getSampleCluster() {
         medium: "balance",
         accountNumber: "1234567890123456",  //display
         merchantName: "Joes house of cats", //display
-        geoCode : {lat: 37.53, lng: -77.4},  //use this
-        confirmedFraud : 0,  //color red/yellow
+        geoCode: {lat: 37.53, lng: -77.4},  //use this
+        confirmedFraud: 0,  //color red/yellow
         dateInSeconds: 74200240802420,
         distanceFromHome: 55.2420
     };
@@ -34,8 +29,8 @@ function getSampleCluster() {
         accountNumber: "1234567890123477",
         merchantName: "Joes house of cats",
         distanceFromHome: 55.2420,
-        geoCode : {lat: 37.539, lng: -77.49},
-        confirmedFraud : 1
+        geoCode: {lat: 37.539, lng: -77.49},
+        confirmedFraud: 1
     };
     var p3 = {
         _id: '123456789012345678901236',
@@ -48,15 +43,15 @@ function getSampleCluster() {
         medium: "balance",
         accountNumber: "1234567890123477",
         merchantName: "Bobs mitten parlor",
-        geocode : {lat: 37.539, lng: -77.40},
-        confirmedFraud : 0,
+        geocode: {lat: 37.539, lng: -77.40},
+        confirmedFraud: 0,
         dateInSeconds: 74200240802420,
         distanceFromHome: 55.2420
     };
     return [p2, p1, p3];
 }
 
-function analyze(arrayOfDictionaries){
+function analyze(arrayOfDictionaries) {
     console.log("Array of dictionaries:");
     console.log(arrayOfDictionaries);
     return;
@@ -67,13 +62,6 @@ function distance(p1, p2) {
     if (p1 != undefined && p2 != undefined)
         return (Math.pow(p1.x - p2.x, 2) + Math.pow(p1.y - p2.y, 2) + Math.pow(((p1.t - p2.t) / 1000), 2))
 }
-
-module.exports = {
-    getSampleCluster: getSampleCluster,
-    analyze: analyze,
-    distance: distance
-};
-
 
 var NodeGeocoder = require('node-geocoder');
 var options = {
@@ -87,10 +75,11 @@ var options = {
 var geocoder = NodeGeocoder(options);
 
 // Using callback
-geocoder.geocode('2300 W. Grace St, Richmond, VA 23220', function(err, res) {
+geocoder.geocode('2300 W. Grace St, Richmond, VA 23220', function (err, res) {
     console.log(res[0].longitude);
 });
 module.exports = {
+    getSampleCluster: getSampleCluster,
     analyze: analyze,
-    getSampleCluster: getSampleCluster
+    distance: distance
 };

@@ -2,6 +2,9 @@
 <html>
 <head>
     <script type='text/javascript' src="/js/maps.js"></script>
+    <script type="text/javascript" src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
+
+    <!--<script type="text/javascript" src="/js/jquery.min.js"></script>-->
     <script src="https://maps.google.com/maps/api/js?key=AIzaSyAuPcuo-7oFqieEYb62SmifV4rSGfxgunA&callback=initMap"
             async defer></script>
     <link rel="stylesheet" href="/stylesheets/style.css"/>
@@ -13,8 +16,29 @@
     <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
 
     <!-- Overlay content -->
-    <div class="overlay-content">
+    <div class="overlay-content" style="color: white">
         <!--insert table here-->
+        <table>
+            <% for (i = 0; i < purchases.length; i++) { %>
+            <%= console.log(i + purchases[i]) %>
+            <tr>
+                <td>
+                    <%= purchases[i].purchase_date %>
+                </td>
+                <td>
+                    <%= purchases[i].accountNumber %>
+                </td>
+                <td>
+                    <%= purchases[i].merchantName %>
+                </td>
+                <td>
+                    <!--<%= purchases[i].geocode %>-->
+                    Fill me with all the good stuff
+                </td>
+            </tr>
+            <% } %>
+        </table>
+
     </div>
 
 </div>
