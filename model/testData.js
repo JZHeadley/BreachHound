@@ -129,6 +129,17 @@ console.log(genNewAccount());
 console.log(genNewMerchant());
 console.log(genNormalPurchase());
 
+
+var pre = require('../services/preload');
+
+/*function reload(){
+    pre.preload(function ())
+}*/
+
+
+
+
+
 module.exports = {
     genNewCustomer: genNewCustomer,
     genNewAccount: genNewAccount,
