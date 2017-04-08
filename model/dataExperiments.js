@@ -36,6 +36,36 @@ for (var i = 0; i < 3; i++) {
     ps.push(genFraud(10, 20, 9000, 75, "Bobs pawn"));
 }
 
+/*<script src="https://maps.google.com/maps?file=api&amp;v=3&amp;sensor=false"
+type="text/javascript"></script>
 
+var geocoder = new google.maps.Geocoder();
+var address = "new york";
 
+geocoder.geocode( { 'address': address}, function(results, status) {
+
+    if (status == google.maps.GeocoderStatus.OK) {
+        var latitude = results[0].geometry.location.lat();
+        var longitude = results[0].geometry.location.lng();
+        console.log(latitude);
+    }
+});*/
+
+var NodeGeocoder = require('node-geocoder');
+
+var options = {
+    provider: 'google',
+
+    // Optional depending on the providers
+    httpAdapter: 'https', // Default
+    apiKey: 'AIzaSyAuPcuo-7oFqieEYb62SmifV4rSGfxgunA', // for Mapquest, OpenCage, Google Premier
+    formatter: null         // 'gpx', 'string', ...
+};
+
+var geocoder = NodeGeocoder(options);
+
+// Using callback
+geocoder.geocode('29 champs elysée paris', function(err, res) {
+    console.log(res);
+});
 

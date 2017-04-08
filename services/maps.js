@@ -49,6 +49,7 @@ function geocodeAddress(geocoder, resultsMap) {
     geocoder.geocode({'address': address}, function (results, status) {
         if (status === 'OK') {
             resultsMap.setCenter(results[0].geometry.location);
+            console.log(results[0].geometry.location)
             resultsMap.setZoom(18);
             var marker = new google.maps.Marker({
                 map: resultsMap,
@@ -60,6 +61,11 @@ function geocodeAddress(geocoder, resultsMap) {
         }
     });
 }
+
+
+var geocoder = new google.maps.Geocoder();
+geocodeAddress(geocoder, map);
+
 
 
 
