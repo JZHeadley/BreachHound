@@ -26,8 +26,8 @@
             document.getElementById("blue").addEventListener("click", displayBlue, false);
             document.getElementById("none").addEventListener("click", displayNone, false);
             var options = {
-                center: new google.maps.LatLng(39.831036, -100.781252),
-                zoom: 3,
+                center: new google.maps.LatLng(40.515521, -71.875002),
+                zoom: 5,
                 mapTypeId: google.maps.MapTypeId.ROADMAP,
                 libraries: 'visualization'
             };
@@ -116,16 +116,28 @@
             }
             return icon;
         }
-
+        var prev_infowindow = false;
         function addPoint(point) {
+            var infowindow = new google.maps.InfoWindow({
+                content: '<div class="contentWindow">' + point.merchantName + '</div>'
+            });
             console.log("adding point")
             var marker = new google.maps.Marker({
                 position: point.geoCode,
                 map: map,
                 icon: getIconColor(point)
             });
-            markers.push(marker);
-            markerType.push(point.confirmedFraud);
+            marker.addListener('mouseover', function () {
+                $(".gm-style-iw").next("div").hide();
+                if (prev_infowindow) {
+                    prev_infowindow.close();
+                }
+                prev_infowindow = infowindow;
+                infowindow.open(map, marker);
+            });
+
+        markers.push(marker);
+        markerType.push(point.confirmedFraud);
         }
 
 
@@ -167,9 +179,9 @@
 </div>
 <div class="map-position">
     <div class="displayButton" id="all">All</div>
-    <div class="displayButton" id="gray">Unrelated</div>
-    <div class="displayButton" id="red">Likely</div>
-    <div class="displayButton" id="orange">Possible</div>
+    <div class="displayButton" id="gray">Suspected</div>
+    <div class="displayButton" id="red">Confirmed</div>
+    <div class="displayButton" id="orange">Related</div>
     <div class="displayButton" id="blue">CPP</div>
     <div class="displayButton" id="none">Clear</div>
     <div id="map"></div>

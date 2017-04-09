@@ -15,7 +15,7 @@ function triggerNav() {
 function closeNav() {
     //1280
     document.getElementById("tableOverlay").style.width = "40%";
-    document.getElementById("map").style.marginLeft = "40%"
+    document.getElementById("map").style.marginLeft = "38%"
 }
 
 function openNav() {

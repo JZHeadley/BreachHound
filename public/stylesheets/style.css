@@ -135,12 +135,12 @@ th {
 .sub {
     float: right;
     border-radius: 3px;
-    border-color: green;
+    border-color: lightgray;
     width: 10%;
     font-size: medium;
-    background: radial-gradient(greenyellow, green);
+    background: radial-gradient(lightgray, gray);
     background-attachment: fixed;
-    color: black;
+    color: white;
     margin-bottom: 5px;
     margin-right: 1%;
 }
@@ -152,7 +152,7 @@ th {
     height: 25px;
     text-align: center;
     padding-top: 8px;
-    font-family: 'Roboto','sans-serif';
+    font-family: 'Roboto', 'sans-serif';
     font-size: 85%;
     border-radius: 3px;
     border: .5px dimgray;
@@ -160,41 +160,59 @@ th {
     right: 10px;
 }
 
-.displayButton:hover{
+.displayButton:hover {
     box-shadow: none;
     border-radius: 3px;
     border: .5px dimgray;
 }
 
-#all{
+#all {
     top: 10px;
     background: linear-gradient(to right, red, orange, yellow, greenyellow, green);
 }
 
-#gray{
-    top:50px;
+#gray {
+    top: 50px;
     background: radial-gradient(lightgray, gray);
     color: white;
 }
 
-#red{
-    top:90px;
+#red {
+    top: 90px;
     background: radial-gradient(red, darkred);
     color: white;
 }
-#orange{
-    top:130px;
+
+#orange {
+    top: 130px;
     background: radial-gradient(#ffb326, #e57326);
     color: white;
 }
-#blue{
-     top:170px;
-     background: radial-gradient(#38aae8, #2460ff);
-     color: white;
- }
-#none{
-    top:210px;
-    background: radial-gradient(white, #e9e9e9);
-    opacity: .8;
+
+#blue {
+    top: 170px;
+    background: radial-gradient(#38aae8, #2460ff);
+    color: white;
 }
 
+#none {
+    top: 210px;
+    background: radial-gradient(white, #e9e9e9);
+    opacity: .7;
+}
+
+
+
+.contentWindow {
+    height: auto;
+    width: auto;
+    font-size: xx-small;
+    overflow: hidden;
+    padding: 0px;
+}
+
+.gm-style-iw + div {
+    display: none;
+}
+.gm-style-iw {text-align:center;
+padding: 0}
