@@ -58,7 +58,7 @@ var getMerchantsHelper = function (urls, callback) {
     }
 };
 
-function getMerchants(callback) {
+function getMerchantstest(callback) {
     var urls = [];
     var merchants = [];
     for (var page = 1; page <= 223; page++) {
@@ -71,7 +71,13 @@ function getMerchants(callback) {
             merchants.push(response.body);
         }
     });
-    callback(merchants);
+}
+
+function getMerchants(callback) {
+    request('http://api.reimaginebanking.com/merchants?key=' + apiKey, function (err, resp, body) {
+        var x = JSON.parse(body);
+        callback(x);
+    });
 }
 
 function populateList(page, callback) {
@@ -81,17 +87,6 @@ function populateList(page, callback) {
     });
 }
 
-function looper(callback) {
-    var all = "";
-    looper(function (merchants) {
-        for (var i = 1; i <= 223; i++) {
-            populateList(i, function (indv) {
-                all += indv;
-            });
-        }
-        callback(all);
-    });
-}
 /*function getTransactions(callback) {
  var transactions = [];
 
@@ -124,14 +119,14 @@ function getMerchant(id, callback) {
  });
  }*/
 function insaneRecursiveCallback(acctList, purchaseList, callback) {
-    console.log("irc number of accounts: " + acctList.length);
+    //console.log("irc number of accounts: " + acctList.length);
     if (acctList.length == 0) {
         callback(purchaseList);
     } else {
         var a_id = acctList.pop()
         request('http://api.reimaginebanking.com/accounts/' + a_id + '/purchases?key=' + apiKey, function (err, resp, body) {
-            console.log("Request text: " + 'http://api.reimaginebanking.com/accounts/' + a_id + '/purchases?key=' + apiKey);
-            console.log("getPurchases json response" + JSON.stringify(body));
+            //console.log("Request text: " + 'http://api.reimaginebanking.com/accounts/' + a_id + '/purchases?key=' + apiKey);
+            //console.log("getPurchases json response" + JSON.stringify(body));
             //transactions.push(JSON.parse(body));
             purchaseList = purchaseList.concat(JSON.parse(body));
             insaneRecursiveCallback(acctList, purchaseList, callback)

@@ -91,47 +91,51 @@ function getSampleCluster(fraudReport, callback) {
 }
 
 function analyze(){
-    for (var p in purchases) {
-        var purch = purchases[p];
-        var dp = {
-            _id: purch._id,
-            type: "merchant",
-            merchant_id: purch.merchant_id,
-            payer_id: purch.payer_id,
-            purchase_date: purch.purchase_date, //use this
-            amount: purch.amount,
-            status: "completed",
-            medium: "balance",
-            accountNumber: accounts[purch.payer_id].account_number,  //display
-            merchantName: merchants[purch.merchant_id].name, //display
-            geoCode: merchants[purch.merchant_id].geocode,  //use this
-            confirmedFraud: 0,
-            dateInSeconds: convertDate(purch.purchase_date),
-            distanceFromHome: 55.2420,
-            address: merchants[purch.merchant_id].address
-        };
+    pre.preload(function (dict) {
+        merchants = dict['merchants'];
+        for (var p in purchases) {
+            var purch = purchases[p];
+            //console.log("MERCHANT ID: " + purch.merchant_id);
+            var dp = {
+                _id: purch._id,
+                type: "merchant",
+                merchant_id: purch.merchant_id,
+                payer_id: purch.payer_id,
+                purchase_date: purch.purchase_date, //use this
+                amount: purch.amount,
+                status: "completed",
+                medium: "balance",
+                accountNumber: accounts[purch.payer_id].account_number, //display
+                merchantName: merchants[purch.merchant_id].name, //display
+                geoCode: merchants[purch.merchant_id].geocode,  //use this
+                confirmedFraud: 0,
+                dateInSeconds: convertDate(purch.purchase_date),
+                distanceFromHome: 55.2420,
+                address: merchants[purch.merchant_id].address
+            };
 
-        for (var fraudId in confirmedFraud) {
-            console.log(dp._id + "/" + fraudId);
-            if (fraudId.valueOf() == dp._id.valueOf()) {
-                dp.confirmedFraud = 1;
-                confirmedFraudDPs.push(dp);
-                //console.log("CONFIRMED FRAUD:");
-                console.log(dp);
+            for (var fraudId in confirmedFraud) {
+                //console.log(dp._id + "/" + fraudId);
+                if (fraudId.valueOf() == dp._id.valueOf()) {
+                    dp.confirmedFraud = 1;
+                    confirmedFraudDPs.push(dp);
+                    //console.log("CONFIRMED FRAUD:");
+                    //console.log(dp);
+                }
             }
+            dataPoints.push(dp);
         }
-        dataPoints.push(dp);
-    }
-    console.log("CONFIRMED FRAUD:");
-    console.log(confirmedFraudDPs);
-    //findCPP();
+        //console.log("CONFIRMED FRAUD:");
+        //console.log(confirmedFraudDPs);
+        //findCPP();
+    });
 }
 
 
 function findCPP() {
     var merchantCounts = {};
     for (var fdp in confirmedFraudDPs) {
-        console.log("FDP merchid: " + fdp.merchant_id);
+        // console.log("FDP merchid: " + fdp.merchant_id);
         if (merchantCounts[fdp.merchant_id] == null) {
             merchantCounts[fdp.merchant_id] = 1;
         } else {
@@ -139,8 +143,8 @@ function findCPP() {
         }
     }
     for (var m in merchantCounts) {
-        console.log("MerchantcountID: "+  m);
-        console.log("Merchant: " + merchants[m].name + ", Commonality: " + merchantCounts[m]);
+        //console.log("MerchantcountID: "+  m);
+        //console.log("Merchant: " + merchants[m].name + ", Commonality: " + merchantCounts[m]);
     }
 }
 
@@ -169,7 +173,7 @@ var geocoder = NodeGeocoder(options);
 
 // Using callback
 geocoder.geocode('2300 W. Grace St, Richmond, VA 23220', function (err, res) {
-    console.log(res[0].longitude);
+    //console.log(res[0].longitude);
 });
 
 function getDistanceFromLatLonInKm(coord1, coord2) {

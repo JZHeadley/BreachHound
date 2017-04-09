@@ -7,7 +7,7 @@ var data = require('../model/testData');
 var anal = require('../model/analysis');
 
 dict.preload(function (returnValue) {
-    console.log(returnValue['merchants'].length);
+    console.log("MERCHANTS LENGTH" + returnValue['merchants'].length);
     //anal.analyze(returnValue);
     //nessie.createCustomer(data.genNewCustomer());
 });
