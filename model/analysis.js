@@ -46,9 +46,9 @@ function doAnalysis(fraudReport, callback) {
         analyze();
         var dataPoints = [];
         for (var id in dataPointDic) {
-            dataPoints.push(dataPointDic[k]);
+            dataPoints.push(dataPointDic[id]);
         }
-        console.log(dataPoints);
+        console.log("dataPoints: " + dataPoints);
         callback(dataPoints);
     });
 }
@@ -109,8 +109,8 @@ function getSampleCluster(fraudReport, callback) {
 }
 
 function analyze(){
-    pre.preload(function (dict) {
-        merchants = dict['merchants'];
+    //pre.preload(function (dict) {
+    //    merchants = dict['merchants'];
         for (var p in purchases) {
             var purch = purchases[p];
             //console.log("MERCHANT ID: " + purch.merchant_id);
@@ -160,7 +160,7 @@ function analyze(){
         cardsAffected = 0;
         markPurchasesForMerch(worstSuspect);
         console.log(getEmailText());
-    });
+    //});
 }
 
 
