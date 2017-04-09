@@ -166,7 +166,7 @@ var nessie = require('../services/nessie');
 var pre = require('../services/preload');
 function update(continuation) {
     pre.preload(function (hDic) {
-        console.log(hDic['merchants']['57cf75cea73e494d8675ec5b'].geocode);
+        //console.log(hDic['merchants']['57cf75cea73e494d8675ec5b'].geocode);
         merchants = hDic['merchants'];
         customers = hDic['customers'];
         accounts = hDic['accounts'];
@@ -240,7 +240,7 @@ function simulateFraud(numCards, cppMerchant_id, exploitZipcode){
     })
     //return fraudPurchases;
 }
-simulateFraud(10, "57cf75cea73e494d8675ec49", 14850)
+//simulateFraud(10, "57cf75cea73e494d8675ec49", 14850)
 
 
 

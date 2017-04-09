@@ -7,7 +7,9 @@
     "serve": "nodemon ./bin/www"
   },
   "dependencies": {
+    "Promise": "^1.0.5",
     "body-parser": "~1.17.1",
+    "cheerio": "^0.22.0",
     "clusterfck": "^0.6.0",
     "cookie-parser": "~1.4.3",
     "debug": "~2.6.3",
@@ -20,6 +22,7 @@
     "nessie-nodejs-sdk": "^1.0.3",
     "node-geocoder": "^3.16.0",
     "node-http-api": "0.0.1",
+    "promise": "^7.1.1",
     "query-string": "^4.3.2",
     "random-user": "^2.0.2",
     "serve-favicon": "~2.4.2"

@@ -3,11 +3,11 @@
  */
 var dict = require('./preload');
 var data = require('../model/testData');
-var nessie = require('./nessie');
+//var nessie = require('./nessie');
 var anal = require('../model/analysis');
 
 dict.preload(function (returnValue) {
-    console.log(returnValue['merchants']);
+    console.log(returnValue['merchants'].length);
     //anal.analyze(returnValue);
     //nessie.createCustomer(data.genNewCustomer());
 });
