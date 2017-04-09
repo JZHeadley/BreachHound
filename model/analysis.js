@@ -14,7 +14,12 @@ var worstCommonality = 0;
 
 var pre = require('../services/preload');
 
-var exampleFraudReport = ["58e99ae2ceb8abe24250b988", "58e99ae2ceb8abe24250b989", "58e99ae2ceb8abe24250b98c"];
+var exampleFraudReport = ["58e9f0b7ceb8abe24250c1f5",
+    "58e9f0b8ceb8abe24250c202",
+    "58e9f0b8ceb8abe24250c206",
+    "58e9f0b8ceb8abe24250c203",
+    "58e9f0b8ceb8abe24250c20b",
+    "58e9f0b8ceb8abe24250c20c"];
 function doAnalysis(fraudReport, callback) {
     pre.preload(function (hDic) {
         //console.log(hDic['merchants']['57cf75cea73e494d8675ec5b'].geocode);

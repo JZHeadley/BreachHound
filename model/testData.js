@@ -173,11 +173,16 @@ function update(continuation) {
         purchases = hDic['purchases'];
         //console.log("update TYPEOF purchases" + typeof(purchases))
         for (var m in merchants) {
-            merch = merchants[m];
-            if (merchantsByZipCode[merch.address.zip] == null) {
-                merchantsByZipCode[merch.address.zip] = [merch];
-            } else {
-                merchantsByZipCode[merch.address.zip].push(merch);
+            var merch = merchants[m];
+            try {
+                //console.log("zip: " + merch.address.zip);
+                if (merchantsByZipCode[merch.address.zip] == null) {
+                    merchantsByZipCode[merch.address.zip] = [merch];
+                } else {
+                    merchantsByZipCode[merch.address.zip].push(merch);
+                }
+            } catch(e) {
+                console.log("No zip for merchant: " + merch._id);
             }
         }
 
@@ -245,12 +250,14 @@ function simulateFraud(numCards, cppMerchant_id, exploitZipcode){
             nessie.createPurchase(p2, doNothing);
             p3 = genPurchase(compromisedCard._id, merchants[randomKey(merchants)]._id);
             nessie.createPurchase(p3, doNothing);
+            p4 = genPurchase(compromisedCard._id, merchants[randomKey(merchants)]._id);
+            nessie.createPurchase(p4, doNothing);
         }
         //console.log(fraudPurchases);
     })
     //return fraudPurchases;
 }
-//simulateFraud(10, "57cf75cea73e494d8675ec49", 14850)
+//simulateFraud(15, "57cf75cea73e494d8675f023", 14850);
 
 
 
