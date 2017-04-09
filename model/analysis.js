@@ -22,10 +22,27 @@ var exampleFraudReport = ["58e9f0b7ceb8abe24250c1f5",
     "58e9f0b8ceb8abe24250c20b",
     "58e9f0b8ceb8abe24250c20c"];
 function doAnalysis(fraudReport, callback) {
+    console.log("FraudReport: " + fraudReport);
     pre.preload(function (hDic) {
         //console.log(hDic['merchants']['57cf75cea73e494d8675ec5b'].geocode);
         confirmedFraud = fraudReport;
         merchants = hDic['merchants'];
+        for (var m in merchants) {
+            var merch = merchants[m];
+            try {
+                var x = merch.address.zip;
+            } catch(e) {
+                console.log("Fixing address");
+                var addr = {
+                    zip: "23200",
+                    street_number: "2200",
+                    street_name:  "W Grace St",
+                    city: "Richmond",
+                    state: "VA"
+                };
+                merch.address = addr;
+            }
+        }
         console.log("Total Merchants: " + Object.keys(merchants).length);
         customers = hDic['customers'];
         accounts = hDic['accounts'];
