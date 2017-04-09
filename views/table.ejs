@@ -3,7 +3,7 @@
         <th>Purchase Date</th>
         <th>Account Number</th>
         <th>Merchant Name</th>
-        <th>Anal...I mean address</th>
+        <th>Address</th>
     </tr>
     <% for (var i = 0; i < purchases.length; i++) { %>
     <tr>
@@ -11,13 +11,13 @@
             <%= purchases[i].purchase_date %>
         </td>
         <td>
-            <%= purchases[i].accountNumber %>
+            <%= purchases[i]._id %>
         </td>
         <td>
             <%= purchases[i].merchantName %>
         </td>
         <td>
-            <%= purchases[i].address.street_number + " " + purchases[i].address.street_name + " " + purchases[i].address.city + " " + purchases[i].address.state %>
+            <%= [purchases[i].address.street_number, purchases[i].address.street_name, purchases[i].address.city, purchases[i].address.state].join(" ") %>
         </td>
     </tr>
     <% } %>
