@@ -17,7 +17,7 @@ function initMap() {
         };
         locations.push(location);
     }
-    console.log(locations)
+    console.log("This should be an array" + locations);
 /*
 //create empty LatLngBounds object
     var bounds = new google.maps.LatLngBounds();
@@ -74,7 +74,7 @@ geocodeAddress(geocoder, map);
 
 /* Close when someone clicks on the "x" symbol inside the overlay */
 function closeNav() {
-    document.getElementById("tableOverlay").style.width = "40%";
+        document.getElementById("tableOverlay").style.width = "40%";
 }
 
 function openNav() {
