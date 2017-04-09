@@ -91,8 +91,6 @@ function getSampleCluster(fraudReport, callback) {
 }
 
 function analyze(){
-    pre.preload(function (dict) {
-        merchants = dict['merchants'];
         for (var p in purchases) {
             var purch = purchases[p];
             //console.log("MERCHANT ID: " + purch.merchant_id);
@@ -128,7 +126,6 @@ function analyze(){
         //console.log("CONFIRMED FRAUD:");
         //console.log(confirmedFraudDPs);
         //findCPP();
-    });
 }
 
 

@@ -37,19 +37,23 @@ function preload(callback) {
              value: accountDict
              });*/
 
-            tmo.getMerchants(function (returnVals) {
+            tmo.getMerchants(223, [], function (returnVals) {
                 /*console.log("RETURN VALS "+returnVals.length);
-                for (var i = 0; i < returnVals.length; i++) {
+                 for (var i = 0; i < returnVals.length; i++) {
                  console.log("RETURN VALS DATA "+returnVals[i].data.length);
                  for (var j = 0; j < returnVals[i].data.length; j++) {
                  console.log("JSON  "+JSON.parse(returnVals[i]).data[j]._id);
-                        merchantDict[JSON.parse(returnVals[i]).data[j]._id] = JSON.parse(returnVals[i]).data[j];
-                    }
+                 merchantDict[JSON.parse(returnVals[i]).data[j]._id] = JSON.parse(returnVals[i]).data[j];
+                 }
                  }*/
-                for (var i = 0; i < returnVals.data.length; i++) {
-                    merchantDict[returnVals.data[i]._id] = returnVals.data[i];
+                //console.log("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! " + JSON.stringify(returnVals[0].data[0]) + " !!!!!!!!!!!!!!!!!!!!!!!!!!");
+                for (var i = 0; i < returnVals.length; i++) {
+                    for (var j = 0; j < returnVals[i].data.length; j++) {
+                        merchantDict[returnVals[i].data[j]._id] = returnVals[i].data[j];
+                        //console.log(returnVals[i].data[j]);
+                    }
                 }
-                
+
                 dictionaries['merchants'] = merchantDict;
 
                 var acctIds = Object.keys(accountDict);

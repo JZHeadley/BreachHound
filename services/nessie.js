@@ -58,8 +58,8 @@ var getMerchantsHelper = function (urls, callback) {
     }
 };
 
-function getMerchantstest(callback) {
-    var urls = [];
+function getMerchants(page, merchantlist, callback) {
+    /*var urls = [];
     var merchants = [];
     for (var page = 1; page <= 223; page++) {
         urls.push('http://api.reimaginebanking.com/merchants?key=' + apiKey + '&page=' + page)
@@ -70,11 +70,36 @@ function getMerchantstest(callback) {
             console.log(response.body);
             merchants.push(response.body);
         }
-    });
+     });*/
+
+    if (page == 0) {
+        callback(merchantlist);
+    }
+    else {
+        request('http://api.reimaginebanking.com/merchants?key=' + apiKey + '&page=' + page, function (err, resp, body) {
+            merchantlist = merchantlist.concat(JSON.parse(body));
+            getMerchants(page - 1, merchantlist, callback);
+        })
+    }
+}
+function insaneRecursiveCallback(acctList, purchaseList, callback) {
+    //console.log("irc number of accounts: " + acctList.length);
+    if (acctList.length == 0) {
+        callback(purchaseList);
+    } else {
+        var a_id = acctList.pop()
+        request('http://api.reimaginebanking.com/accounts/' + a_id + '/purchases?key=' + apiKey, function (err, resp, body) {
+            //console.log("Request text: " + 'http://api.reimaginebanking.com/accounts/' + a_id + '/purchases?key=' + apiKey);
+            //console.log("getPurchases json response" + JSON.stringify(body));
+            //transactions.push(JSON.parse(body));
+            purchaseList = purchaseList.concat(JSON.parse(body));
+            insaneRecursiveCallback(acctList, purchaseList, callback)
+        })
+    }
 }
 
-function getMerchants(callback) {
-    request('http://api.reimaginebanking.com/merchants?key=' + apiKey, function (err, resp, body) {
+function getCustomers(callback) {
+    request('http://api.reimaginebanking.com/customers?key=' + apiKey, function (err, resp, body) {
         var x = JSON.parse(body);
         callback(x);
     });
@@ -118,21 +143,7 @@ function getMerchant(id, callback) {
  callback(x);
  });
  }*/
-function insaneRecursiveCallback(acctList, purchaseList, callback) {
-    //console.log("irc number of accounts: " + acctList.length);
-    if (acctList.length == 0) {
-        callback(purchaseList);
-    } else {
-        var a_id = acctList.pop()
-        request('http://api.reimaginebanking.com/accounts/' + a_id + '/purchases?key=' + apiKey, function (err, resp, body) {
-            //console.log("Request text: " + 'http://api.reimaginebanking.com/accounts/' + a_id + '/purchases?key=' + apiKey);
-            //console.log("getPurchases json response" + JSON.stringify(body));
-            //transactions.push(JSON.parse(body));
-            purchaseList = purchaseList.concat(JSON.parse(body));
-            insaneRecursiveCallback(acctList, purchaseList, callback)
-        })
-    }
-}
+
 /*getMerchants(function (returnVal) {
  for(var i =0; i < returnVal.data.length; i++)
  {
