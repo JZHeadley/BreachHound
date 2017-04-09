@@ -72,34 +72,35 @@ a {
 
 table {
     font-family: Calibri;
-    font-size: large;
+    font-size: medium;
     width: inherit;
     height: 100%;
 }
+
 tr {
     height: 50px;
-    opacity: .4;
+    color: #FFFFFF;
 }
-tr:nth-child(even) {
-    background-color: #818181;
 
+tr:nth-child(even) {
+    background-color: lightskyblue;
 }
 
 tr:nth-child(odd) {
-    background-color: #f1f1f1;
+    background-color: steelblue;
 }
-
-tr:hover {
-    background-color: #e9ecf0;
-    opacity: .7;
-}
-th, th:hover {
-    background-color: aliceblue;
+tr:hover{
+    background-color: Highlight;
 }
 img{
     vertical-align: middle;
     margin-right: 2px;
     float: right;
+}
+th {
+    background-color: aliceblue;
+    color: black;
+    font-weight: bold;
 }
 
 
