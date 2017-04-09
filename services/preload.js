@@ -40,32 +40,37 @@ function preload(callback) {
             tmo.getMerchants(function (returnVals) {
                 for (var i = 0; i < returnVals.data.length; i++) {
                     merchantDict[returnVals.data[i]._id] = returnVals.data[i];
-                    /*merchantDict.push({
-                        key: returnVals.data[i]._id,
-                        value: returnVals.data[i]
-                    });*/
                 }
                 dictionaries['merchants'] = merchantDict;
-                /*dictionaries.push({
-                    key: 'merchants',
-                    value: merchantDict
-                });*/
 
-                tmo.getTransactions(function (returnVals) {
+                var acctIds = Object.keys(accountDict);
+                console.log("acctIds before insane recursive callback: " + acctIds);
+                tmo.insaneRecursiveCallback(acctIds, [], function (returnVals) {
+                    console.log("in getTransactions callback, returnVals: " + returnVals)
                     for (var i = 0; i < returnVals.length; i++) {
                         transactionDict[returnVals[i]._id] = returnVals[i];
-                       /* transactionDict.push({
-                            key: returnVals[i]._id,
-                            value: returnVals[i]
-                        });*/
+
                     }
-                    dictionaries['transactions'] = transactionDict;
-                    /*dictionaries.push({
-                        key: 'transactions',
-                        value: transactionDict
-                    });*/
+                    dictionaries['purchases'] = transactionDict;
                     callback(dictionaries);
                 });
+                /*tmo.getTransactions(accountDict, function (returnVals) {
+                    console.log("in getTransactions callback: " + returnVals[0])
+                    for (var i = 0; i < returnVals.length; i++) {
+                        transactionDict[returnVals[i]._id] = returnVals[i];
+
+                    }
+                    dictionaries['purchases'] = transactionDict;
+                    callback(dictionaries);
+                });*/
+                /*tmo.getTransactions(function (returnVals) {
+                    for (var i = 0; i < returnVals.length; i++) {
+                        transactionDict[returnVals[i]._id] = returnVals[i];
+
+                    }
+                    dictionaries['purchases'] = transactionDict;
+                    callback(dictionaries);
+                });*/
             });
         });
     });
