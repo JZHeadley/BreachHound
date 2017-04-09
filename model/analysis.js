@@ -45,7 +45,7 @@ function getSampleCluster() {
         medium: "balance",
         accountNumber: "1234567890123477",
         merchantName: "Bobs mitten parlor",
-        geocode: {lat: 37.539, lng: -77.40},
+        geoCode: {lat: 37.539, lng: -77.40},
         confirmedFraud: 0,
         dateInSeconds: 74200240802420,
         distanceFromHome: 55.2420
