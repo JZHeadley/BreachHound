@@ -16,37 +16,87 @@
         var map;
         var heatmap;
         var points;
+        var markers = [];
+        var markerType = [];
         function initialize() {
+            document.getElementById("all").addEventListener("click", displayAll, false);
+            document.getElementById("gray").addEventListener("click", displayGray, false);
+            document.getElementById("red").addEventListener("click", displayRed, false);
+            document.getElementById("orange").addEventListener("click", displayOrange, false);
+            document.getElementById("blue").addEventListener("click", displayBlue, false);
+            document.getElementById("none").addEventListener("click", displayNone, false);
             var options = {
-                center: new google.maps.LatLng(37.5407, -77.4360),
-                zoom: 8,
+                center: new google.maps.LatLng(39.831036, -100.781252),
+                zoom: 3,
                 mapTypeId: google.maps.MapTypeId.ROADMAP,
                 libraries: 'visualization'
             };
             map = new google.maps.Map(document.getElementById('map'), options);
 
-            $.get("/maps/points", function (results) {
-                console.log(results);
-                points = JSON.parse(results);
-//            console.log("points", points.toString());
-                var heatmapData = [];
-                points.forEach(function (point) {
-                    console.log(point.geoCode);
-                    addPoint(point);
-//                    if (parseInt(point.confirmedFraud) !== 0)
-                    heatmapData.push(new google.maps.LatLng(point.geoCode.lat, point.geoCode.lng))
-                })
-                heatmap = new google.maps.visualization.HeatmapLayer({
-                    data: heatmapData,
-                    radius: 75,
-                    opacity: .5,
-                    map: map
-                });
-                heatmap.setMap(map);
+            function displayGray() {
+                for (var i = 0; i < markers.length; i++) {
+                    if (markerType[i] == 0)
+                        markers[i].setMap(map);
+                }
+            }
 
-            });
+            function displayRed() {
+                for (var i = 0; i < markers.length; i++) {
+                    if (markerType[i] == 1)
+                        markers[i].setMap(map);
+                }
+            }
+
+            function displayOrange() {
+                for (var i = 0; i < markers.length; i++) {
+                    if (markerType[i] == 2)
+                        markers[i].setMap(map);
+                }
+            }
+
+            function displayBlue() {
+                for (var i = 0; i < markers.length; i++) {
+                    if (markerType[i] == 3)
+                        markers[i].setMap(map);
+                }
+            }
+
+            function displayAll() {
+                for (var i = 0; i < markers.length; i++) {
+                    markers[i].setMap(map);
+                }
+            }
+
+            function displayNone() {
+                for (var i = 0; i < markers.length; i++) {
+                    markers[i].setMap(null);
+                }
+            }
+
 
         }
+
+        $.get("/maps/points", function (results) {
+            console.log(results);
+            points = JSON.parse(results);
+//            console.log("points", points.toString());
+            var heatmapData = [];
+            points.forEach(function (point) {
+                console.log(point.geoCode);
+                addPoint(point);
+//                    if (parseInt(point.confirmedFraud) !== 0)
+                heatmapData.push(new google.maps.LatLng(point.geoCode.lat, point.geoCode.lng))
+            })
+            heatmap = new google.maps.visualization.HeatmapLayer({
+                data: heatmapData,
+                radius: 75,
+                opacity: .5,
+                map: map
+            });
+            heatmap.setMap(map);
+
+        });
+
 
         google.maps.event.addDomListener(window, 'load', initialize);
 
@@ -74,6 +124,8 @@
                 map: map,
                 icon: getIconColor(point)
             });
+            markers.push(marker);
+            markerType.push(point.confirmedFraud);
         }
 
 
@@ -104,20 +156,22 @@
     </script>
 </head>
 <body>
-<div id="tableOverlay" class="overlay" onclick="closeNav()">
+<div id="tableOverlay" class="overlay" onclick="triggerNav()">
     <div class="overlay-content">
-        <form ref="uploadForm"
-              id="uploadForm"
-              action="/uploads"
-              method="post"
-              enctype="multipart/form-data">
-            <input type="file" name="file"/>
-            <input id="formSubmitBtn" type="submit" value="Upload!"/>
+        <form ref="uploadForm" id="uploadForm" action="/uploads" method="post" enctype="multipart/form-data">
+            <input class="file" type="file" name="file"/> <input class="sub" id="formSubmitBtn" type="submit"
+                                                                 value="Load"/>
         </form>
         <%- include table %>
     </div>
 </div>
 <div class="map-position">
+    <div class="displayButton" id="all">All</div>
+    <div class="displayButton" id="gray">Unrelated</div>
+    <div class="displayButton" id="red">Likely</div>
+    <div class="displayButton" id="orange">Possible</div>
+    <div class="displayButton" id="blue">CPP</div>
+    <div class="displayButton" id="none">Clear</div>
     <div id="map"></div>
 </div>
 </body>
