@@ -71,7 +71,7 @@ function getMerchants(page, merchantlist, callback) {
             merchants.push(response.body);
         }
      });*/
-
+    console.log("page: " + page);
     if (page == 0) {
         callback(merchantlist);
     }
@@ -83,7 +83,7 @@ function getMerchants(page, merchantlist, callback) {
     }
 }
 function insaneRecursiveCallback(acctList, purchaseList, callback) {
-    //console.log("irc number of accounts: " + acctList.length);
+    console.log("irc number of accounts: " + acctList.length);
     if (acctList.length == 0) {
         callback(purchaseList);
     } else {

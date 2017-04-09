@@ -20,6 +20,7 @@ function doAnalysis(fraudReport, callback) {
         //console.log(hDic['merchants']['57cf75cea73e494d8675ec5b'].geocode);
         confirmedFraud = fraudReport;
         merchants = hDic['merchants'];
+        console.log("Total Merchants: " + Object.keys(merchants).length);
         customers = hDic['customers'];
         accounts = hDic['accounts'];
         purchases = hDic['purchases'];
