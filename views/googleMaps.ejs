@@ -26,9 +26,9 @@
         google.maps.event.addDomListener(window, 'load', initialize);
 
         $.get("/maps/points", function (results) {
-            console.log(results);
+//            console.log(results);
             points = JSON.parse(results);
-            console.log(points);
+            console.log("points", points.toString());
             var heatmapData = [];
             points.forEach(function (point) {
                 console.log(point.geoCode);

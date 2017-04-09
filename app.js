@@ -4,6 +4,7 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
+var multer = require('multer');
 
 var index = require('./routes/index');
 var users = require('./routes/users');
@@ -16,8 +17,6 @@ var testData = require('./model/testData');
 
 var app = express();
 
-var busboy = require('connect-busboy'); //middleware for form/file upload
-app.use(busboy());
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
