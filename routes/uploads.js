@@ -1,12 +1,14 @@
 var express = require('express')
 var router = express.Router();
 var multer = require('multer');
+var fileLocation;
 var storage = multer.diskStorage({
     destination: function (req, file, callback) {
         callback(null, './uploads');
     },
     filename: function (req, file, callback) {
-        callback(null, file.fieldname + '-' + Date.now());
+        fileLocation = file.fieldname + '-' + Date.now();
+        callback(null, fileLocation);
     }
 });
 var upload = multer({storage: storage}).single('file');
@@ -16,7 +18,9 @@ router.post('/', function (req, res, next) {
         if (err) {
             return res.end("Error uploading file.");
         }
-        res.end("File is uploaded");
+        console.log(fileLocation);
+
+        res.end("" + fileLocation);
     })
 });
 module.exports = router;
