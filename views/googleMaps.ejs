@@ -34,7 +34,7 @@
                     console.log(point.geoCode);
                     addPoint(point);
 //                    if (parseInt(point.confirmedFraud) !== 0)
-                        heatmapData.push(new google.maps.LatLng(point.geoCode.lat, point.geoCode.lng))
+                    heatmapData.push(new google.maps.LatLng(point.geoCode.lat, point.geoCode.lng))
                 })
                 heatmap = new google.maps.visualization.HeatmapLayer({
                     data: heatmapData,
@@ -118,7 +118,7 @@
     </div>
 </div>
 <div class="map-position">
-<div id="map"></div>
+    <div id="map"></div>
 </div>
 </body>
 </html>
