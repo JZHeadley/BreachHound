@@ -119,7 +119,7 @@ function getMerchant(id, callback) {
  });
  }*/
 function insaneRecursiveCallback(acctList, purchaseList, callback) {
-    //console.log("irc number of accounts: " + acctList.length);
+    console.log("irc number of accounts: " + acctList.length);
     if (acctList.length == 0) {
         callback(purchaseList);
     } else {
