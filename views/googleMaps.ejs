@@ -24,6 +24,7 @@
 
         }
         google.maps.event.addDomListener(window, 'load', initialize);
+
         $.get("/maps/points", function (results) {
             console.log(results);
             points = JSON.parse(results);
@@ -40,6 +41,7 @@
                 opacity: .5,
                 map: map
             });
+
             heatmap.setMap(map);
 
         });
@@ -55,7 +57,17 @@
 </head>
 <body>
 <div id="tableOverlay" class="overlay" onclick="closeNav()">
-    <div class="overlay-content"><%- include table %></div>
+    <div class="overlay-content">
+        <form ref="uploadForm"
+              id="uploadForm"
+              action="http://localhost:3000/uploads"
+              method="post"
+              enctype="multipart/form-data">
+            <input type="file" name="file"/>
+            <input type="submit" value="Upload!"/>
+        </form>
+        <%- include table %>
+    </div>
 </div>
 
 <div id="map"></div>

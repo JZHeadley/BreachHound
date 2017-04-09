@@ -17,8 +17,7 @@
             <%= purchases[i].merchantName %>
         </td>
         <td>
-            <!--<%= purchases[i].geocode %>-->Fill me with all the good stuff <img
-                    src="/drawables/right_arrow.png" border='0' height='20' width='15'/>
+            <%= purchases[i].address.street_number + " " + purchases[i].address.street_name + " " + purchases[i].address.city + " " + purchases[i].address.state %>
         </td>
     </tr>
     <% } %>

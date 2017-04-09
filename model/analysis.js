@@ -11,7 +11,7 @@ var confirmedFraudDPs = [];
 
 var pre = require('../services/preload');
 
-var exampleFraudReport = ["58e99ae2ceb8abe24250b988", "58e99ae2ceb8abe24250b989", "58e99ae2ceb8abe24250b98c"]
+var exampleFraudReport = ["58e99ae2ceb8abe24250b988", "58e99ae2ceb8abe24250b989", "58e99ae2ceb8abe24250b98c"];
 function doAnalysis(fraudReport, callback) {
     pre.preload(function (hDic) {
         //console.log(hDic['merchants']['57cf75cea73e494d8675ec5b'].geocode);
