@@ -98,7 +98,7 @@ function getSampleCluster(fraudReport, callback) {
         accountNumber: "1234567890123477",
         merchantName: "Bobs mitten parlor",
         geoCode: {lat: 37.539, lng: -77.40},
-        confirmedFraud: 0,
+        confirmedFraud: 2,
         dateInSeconds: 74200240802420,
         distanceFromHome: 55.2420,
         address: "2200 W. Grace St., Richmond, VA 23181"

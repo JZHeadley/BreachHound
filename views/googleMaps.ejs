@@ -50,12 +50,29 @@
 
         google.maps.event.addDomListener(window, 'load', initialize);
 
+        function getIconColor(point) {
+            var icon;
+            if (point.confirmedFraud == 0) {
+                icon = "/drawables/gray_marker.png"
+            }
+            else if (point.confirmedFraud == 1) {
+                icon = "/drawables/red_marker.png"
+            }
+            else if (point.confirmedFraud == 2) {
+                icon = "/drawables/orange_marker.png"
+            }
+            else {
+                icon = "/drawables/blue_marker.png"
+            }
+            return icon;
+        }
+
         function addPoint(point) {
             console.log("adding point")
             var marker = new google.maps.Marker({
                 position: point.geoCode,
                 map: map,
-                icon: "/drawables/blueMapMarker.png"
+                icon: getIconColor(point)
             });
         }
 
@@ -75,7 +92,7 @@
                         var marker = new google.maps.Marker({
                             position: point.geoCode,
                             map: map,
-                            icon: "/drawables/blueMapMarker.png"
+                            icon: getIconColor()
                         })
                     })
                 },
@@ -100,7 +117,8 @@
         <%- include table %>
     </div>
 </div>
-
+<div class="map-position">
 <div id="map"></div>
+</div>
 </body>
 </html>

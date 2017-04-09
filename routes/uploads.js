@@ -21,7 +21,7 @@ router.post('/', function (req, res, next) {
             return res.end("Error uploading file.");
         }
         var fs = require('fs');
-        var text = fs.readFileSync("uploads/" + fileLocation).toString('utf-8')
+        var text = fs.readFile("uploads/" + fileLocation).toString('utf-8')
         var fraudPoints = text.split("\r\n");
         anal.doAnalysis(fraudPoints, function (results) {
             res.end(JSON.stringify(results));
