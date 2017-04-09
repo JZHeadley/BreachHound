@@ -114,7 +114,7 @@ function genPurchase(acc_id, merch_id) {
         status: "completed",
         medium: "balance"
     };
-    console.log(p);
+    //console.log(p);
     purchases[p._id] = p;
     return p;
 }
@@ -194,10 +194,10 @@ function createCustomers(n) {
     for (var i = 0; i < n; i++) {
         c = genNewCustomer();
         //newCustomers.push(c);
-        console.log(c);
+        //console.log(c);
         nessie.createCustomer(c, function (id) {
             var a = genNewAccount(id);
-            console.log(a);
+            //console.log(a);
             nessie.createAccount(a);
         });
     }
