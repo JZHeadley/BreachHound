@@ -103,6 +103,22 @@ function genNewMerchant() {
 }
 
 
+function genPurchase(acc_id, merch_id) {
+    var p = {
+        _id: randomDigits(24),
+        type: "merchant",
+        merchant_id: merch_id,
+        payer_id: acc_id,
+        purchase_date: "2017-04-18",
+        amount: Math.round(Math.random() * 10000) / 100,
+        status: "completed",
+        medium: "balance"
+    };
+    console.log(p);
+    purchases[p._id] = p;
+    return p;
+}
+
 function genNormalPurchase() {
     var p = {
         _id: randomDigits(24),
@@ -154,7 +170,8 @@ function update(continuation) {
         merchants = hDic['merchants'];
         customers = hDic['customers'];
         accounts = hDic['accounts'];
-        purchases = hDic['purchaces'];
+        purchases = hDic['purchases'];
+        //console.log("update TYPEOF purchases" + typeof(purchases))
         for (var m in merchants) {
             merch = merchants[m];
             if (merchantsByZipCode[merch.address.zip] == null) {
@@ -186,20 +203,45 @@ function createCustomers(n) {
     }
     //return newCustomers
 }
-createCustomers(3);
+//createCustomers(3);
 
 
 /**Display useful zipcodes**/
-update(function () {
+/*update(function () {
     console.log("TotalMerchants: " + Object.keys(merchants).length);
     for (var z in merchantsByZipCode) {
         if (merchantsByZipCode[z].length > 0) {
             console.log("Zip: " + z + " Count: " + merchantsByZipCode[z].length);
         }
     }
-})
+    console.log("purchases: " + Object.keys(purchases));
+})*/
 
-//function simulateFraud();
+function simulateFraud(numCards, cppMerchant_id, exploitZipcode){
+    var fraudPurchases = []
+    update(function() {
+
+        for (var i = 0; i < numCards; i++) {
+            var compromisedCard = accounts[randomKey(accounts)];
+            pExploit = genPurchase(compromisedCard._id, randomElement(merchantsByZipCode[exploitZipcode])._id);
+            console.log("pExploit generated: " + pExploit)
+            nessie.createPurchase(pExploit);
+            fraudPurchases.push(pExploit);
+            pCompromise = genPurchase(compromisedCard._id, cppMerchant_id);
+            nessie.createPurchase(pCompromise);
+            p1 = genPurchase(compromisedCard._id, merchants[randomKey(merchants)]._id);
+            nessie.createPurchase(p1);
+            p2 = genPurchase(compromisedCard._id, merchants[randomKey(merchants)]._id);
+            nessie.createPurchase(p2);
+            p3 = genPurchase(compromisedCard._id, merchants[randomKey(merchants)]._id);
+            nessie.createPurchase(p3);
+        }
+        console.log(fraudPurchases);
+    })
+    //return fraudPurchases;
+}
+simulateFraud(3, "57cf75cea73e494d8675ec49", 14850)
+
 
 
 module.exports = {

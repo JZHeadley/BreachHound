@@ -20,6 +20,7 @@ function getCustomers(callback) {
 function getAccounts(callback) {
     request('http://api.reimaginebanking.com/accounts?key=' + apiKey, function (err, resp, body) {
         var x = JSON.parse(body);
+        console.log("getAccounts json response: " + JSON.stringify(body));
         callback(x);
     });
 }
@@ -54,20 +55,72 @@ function getMerchant(id, callback) {
     });
 }
 
-function getTransactions(callback) {
+
+/*function getAccounts(callback) {
+    request('http://api.reimaginebanking.com/accounts?key=' + apiKey, function (err, resp, body) {
+        var x = JSON.parse(body);
+        callback(x);
+    });
+}*/
+function insaneRecursiveCallback(acctList, purchaseList, callback) {
+    console.log("irc number of accounts: " + acctList.length);
+    if (acctList.length == 0) {
+        callback(purchaseList);
+    } else {
+        var a_id = acctList.pop()
+        request('http://api.reimaginebanking.com/accounts/'+ a_id +'/purchases?key=' + apiKey, function (err, resp, body) {
+            console.log("Request text: " + 'http://api.reimaginebanking.com/accounts/'+ a_id +'/purchases?key=' + apiKey);
+            console.log("getPurchases json response" + JSON.stringify(body));
+            //transactions.push(JSON.parse(body));
+            purchaseList = purchaseList.concat(JSON.parse(body));
+            insaneRecursiveCallback(acctList, purchaseList, callback)
+        })
+    }
+}
+/*function getTransactions(acctDict, callback) {
+    var transactions = [];
+
+    console.log("accDict Passed to getTransactions: " + Object.keys(acctDict))
+    for (var a_id in acctDict) {
+        request('http://api.reimaginebanking.com/accounts/'+ a_id +'/purchases?key=' + apiKey, function (err, resp, body) {
+            console.log("Request text: " + 'http://api.reimaginebanking.com/accounts/'+ a_id +'/purchases?key=' + apiKey);
+            console.log("getPurchases json response" + JSON.stringify(body));
+            //transactions.push(JSON.parse(body));
+            transactions.concat(JSON.parse(body));
+
+        });
+    }
+    callback(transactions);
+}*/
+    /*getMerchants(function (returnVal) {
+        for(var i =0; i < returnVal.data.length; i++)
+        {
+            request('http://api.reimaginebanking.com/merchants/'+returnVal.data[i]._id+'/purchases?key=' + apiKey, function (err, resp, body) {
+                console.log("Request text: " + 'http://api.reimaginebanking.com/merchants/'+returnVal.data[i]._id+'/purchases?key=');
+                console.log("getMerchants json" + JSON.stringify(body));
+                transactions.push(JSON.parse(body));
+
+            });
+        }
+        callback(transactions);
+    });*/
+
+/*function getTransactions(callback) {
     var transactions = [];
 
     getMerchants(function (returnVal) {
         for(var i =0; i < returnVal.data.length; i++)
         {
             request('http://api.reimaginebanking.com/merchants/'+returnVal.data[i]._id+'/purchases?key=' + apiKey, function (err, resp, body) {
+                console.log("Request text: " + 'http://api.reimaginebanking.com/merchants/'+returnVal.data[i]._id+'/purchases?key=');
+                console.log("getMerchants json" + JSON.stringify(body));
                 transactions.push(JSON.parse(body));
-                //console.log(JSON.parse(body));
+
             });
         }
         callback(transactions);
     });
-}
+}*/
 
 function createCustomer(custData, completion) {
     request({
@@ -118,13 +171,16 @@ function createAccount(accountData) {
 }
 
 function createPurchase(purchData) {
-    purchData = JSON.stringify(purchData);
+    //purchData = JSON.stringify(purchData);
     request({
-        url: "http://api.reimaginebanking.com/accounts/"+purchData._id+"/purchases?key="+apiKey,
+        url: "http://api.reimaginebanking.com/accounts/"+purchData.payer_id+"/purchases?key="+apiKey,
         method: "POST",
         json: true,
         body: purchData
     }, function (error, response, body){
+        console.log("new purch URL: " + "http://api.reimaginebanking.com/accounts/"+purchData._id+"/purchases?key="+apiKey);
+        console.log("new purch" + JSON.stringify(body));
+        console.log("new purch_id" + JSON.parse(JSON.stringify(body)).objectCreated._id);
         //console.log(response);
     });
     pre.preload;
@@ -140,7 +196,8 @@ module.exports = {
     getAccountByCustomer:getAccountByCustomer,
     getMerchants:getMerchants,
     getMerchant: getMerchant,
-    getTransactions:getTransactions,
+    //getTransactions:getTransactions,
+    insaneRecursiveCallback: insaneRecursiveCallback,
     createCustomer:createCustomer,
     createMerchant:createMerchant,
     createAccount:createAccount,
