@@ -47,31 +47,7 @@
     <!-- Overlay content -->
     <div class="overlay-content">
         <!--insert table here-->
-        <table>
-            <tr class="head">
-                <th>Purchase Date</th>
-                <th>Account Number</th>
-                <th>Merchant Name</th>
-                <th>Anal...I mean address</th>
-            </tr>
-            <% for (var i = 0; i < purchases.length; i++) { %>
-            <tr>
-                <td>
-                    <%= purchases[i].purchase_date %>
-                </td>
-                <td>
-                    <%= purchases[i].accountNumber %>
-                </td>
-                <td>
-                    <%= purchases[i].merchantName %>
-                </td>
-                <td>
-                    <!--<%= purchases[i].geocode %>-->Fill me with all the good stuff <img
-                            src="/drawables/right_arrow.png" border='0' height='20' width='15'/>
-                </td>
-            </tr>
-            <% } %>
-        </table>
+        <%- include table %>
 
     </div>
 
