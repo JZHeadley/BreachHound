@@ -156,11 +156,19 @@ function createMerchant(merchData) {
 
 function createAccount(accountData) {
     //accountData = JSON.stringify(accountData);
+    accountForAPI = {
+        type: "Credit Card",
+        nickname: "nickname",
+        rewards: 0,
+        balance: 99999999,
+        //account_number: "string"
+    }
+
     request({
         url: "http://api.reimaginebanking.com/customers/"+accountData.customer_id+"/accounts?key="+apiKey,
         method: "POST",
         json: true,
-        body: accountData
+        body: accountForAPI
     }, function (error, response, body){
         console.log("new acct" + JSON.stringify(body));
         //console.log("new acct id" + JSON.parse(JSON.stringify(body)).objectCreated._id);
@@ -170,17 +178,25 @@ function createAccount(accountData) {
     pre.preload;
 }
 
-function createPurchase(purchData) {
+function createPurchase(purchData, completion) {
     //purchData = JSON.stringify(purchData);
+    var purchForAPI = {
+        merchant_id: purchData.merchant_id,
+        medium: purchData.medium,
+        purchase_date: purchData.purchase_date,
+        amount: purchData.amount,
+        description: "please just create a purchase"
+    }
     request({
         url: "http://api.reimaginebanking.com/accounts/"+purchData.payer_id+"/purchases?key="+apiKey,
         method: "POST",
         json: true,
-        body: purchData
+        body: purchForAPI
     }, function (error, response, body){
-        console.log("new purch URL: " + "http://api.reimaginebanking.com/accounts/"+purchData._id+"/purchases?key="+apiKey);
-        console.log("new purch" + JSON.stringify(body));
-        console.log("new purch_id" + JSON.parse(JSON.stringify(body)).objectCreated._id);
+        //console.log("new purch URL: " + "http://api.reimaginebanking.com/accounts/"+purchData.payer_id+"/purchases?key="+apiKey);
+        //console.log("new purch" + JSON.stringify(body));
+        //PRINTHERE//console.log(JSON.parse(JSON.stringify(body)).objectCreated._id);
+        completion(JSON.parse(JSON.stringify(body)).objectCreated._id)
         //console.log(response);
     });
     pre.preload;

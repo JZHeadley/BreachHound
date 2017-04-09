@@ -2,6 +2,8 @@
 var pre = require('../services/preload');
 var nessie = require('../services/nessie');
 function getSampleCluster() {
+
+
     var p1 = {
         _id: '123456789012345678901234',
         type: "merchant",
@@ -16,7 +18,8 @@ function getSampleCluster() {
         geoCode: {lat: 37.53, lng: -77.4},  //use this
         confirmedFraud: 0,  //color red/yellow
         dateInSeconds: 74200240802420,
-        distanceFromHome: 55.2420
+        distanceFromHome: 55.2420,
+        address: "2200 W. Grace St., Richmond, VA 23181"
     };
     var p2 = {
         _id: '123456789012345678901235',
@@ -32,7 +35,8 @@ function getSampleCluster() {
         merchantName: "Joes house of cats",
         distanceFromHome: 55.2420,
         geoCode: {lat: 37.539, lng: -77.49},
-        confirmedFraud: 1
+        confirmedFraud: 1,
+        address: "2200 W. Grace St., Richmond, VA 23181"
     };
     var p3 = {
         _id: '123456789012345678901236',
@@ -48,7 +52,8 @@ function getSampleCluster() {
         geoCode: {lat: 37.539, lng: -77.40},
         confirmedFraud: 0,
         dateInSeconds: 74200240802420,
-        distanceFromHome: 55.2420
+        distanceFromHome: 55.2420,
+        address: "2200 W. Grace St., Richmond, VA 23181"
     };
     return [p2, p1, p3];
 }
