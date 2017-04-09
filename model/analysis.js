@@ -42,6 +42,17 @@ function doAnalysis(fraudReport, callback) {
                 };
                 merch.address = addr;
             }
+            try {
+                var x = merch.geocode.lat;
+            } catch(e) {
+                console.log("Fixing geocode");
+                var geocode = {
+                    lat: 37.56,
+                    lng: -77.47
+                };
+                merch.geocode = geocode;
+            }
+
         }
         console.log("Total Merchants: " + Object.keys(merchants).length);
         customers = hDic['customers'];
