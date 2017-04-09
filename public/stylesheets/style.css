@@ -72,7 +72,7 @@ a {
 
 table {
     font-family: Calibri;
-    font-size: medium;
+    font-size: larger;
     width: inherit;
     height: 100%;
 }
@@ -83,22 +83,30 @@ tr {
 }
 
 tr:nth-child(even) {
-    background-color: lightskyblue;
+    background: radial-gradient(lightskyblue, #467186);
+    background-size: 100% 9%;
+    background-attachment: fixed;
 }
 
 tr:nth-child(odd) {
-    background-color: steelblue;
+    background: radial-gradient(steelblue, #324864);
+    background-size: 100% 9%;
+    background-attachment: fixed;
 }
 tr:hover{
-    background-color: Highlight;
+    background: radial-gradient(#abc0ce, #7b8997);
+    background-size: 100% 9%;
+    background-attachment: fixed;
 }
+
 img{
     vertical-align: middle;
     margin-right: 2px;
     float: right;
 }
 th {
-    background-color: aliceblue;
+    background: radial-gradient(#ffffff, #d2e1e5);
+    background-attachment: fixed;
     color: black;
     font-weight: bold;
 }
