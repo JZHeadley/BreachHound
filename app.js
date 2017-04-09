@@ -9,12 +9,15 @@ var index = require('./routes/index');
 var users = require('./routes/users');
 var maps = require('./routes/maps');
 var table = require('./routes/table');
+var uploads = require('./routes/uploads');
 
 var testData = require('./model/testData');
 
 
 var app = express();
 
+var busboy = require('connect-busboy'); //middleware for form/file upload
+app.use(busboy());
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
@@ -31,6 +34,7 @@ app.use('/', index);
 app.use('/users', users);
 app.use('/maps', maps);
 app.use('/table', table);
+app.use('/uploads', uploads);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
