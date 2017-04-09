@@ -108,58 +108,58 @@ function getSampleCluster(fraudReport, callback) {
     callback([p2, p1, p3]);
 }
 
-function analyze(){
+function analyze() {
     //pre.preload(function (dict) {
     //    merchants = dict['merchants'];
-        for (var p in purchases) {
-            var purch = purchases[p];
-            //console.log("MERCHANT ID: " + purch.merchant_id);
-            var dp = {
-                _id: purch._id,
-                type: "merchant",
-                merchant_id: purch.merchant_id,
-                payer_id: purch.payer_id,
-                purchase_date: purch.purchase_date, //use this
-                amount: purch.amount,
-                status: "completed",
-                medium: "balance",
-                accountNumber: accounts[purch.payer_id].account_number, //display
-                merchantName: merchants[purch.merchant_id].name, //display
-                geoCode: merchants[purch.merchant_id].geocode,  //use this
-                confirmedFraud: 0,
-                dateInSeconds: convertDate(purch.purchase_date),
-                distanceFromHome: 55.2420,
-                address: merchants[purch.merchant_id].address
-            };
+    for (var p in purchases) {
+        var purch = purchases[p];
+        //console.log("MERCHANT ID: " + purch.merchant_id);
+        var dp = {
+            _id: purch._id,
+            type: "merchant",
+            merchant_id: purch.merchant_id,
+            payer_id: purch.payer_id,
+            purchase_date: purch.purchase_date, //use this
+            amount: purch.amount,
+            status: "completed",
+            medium: "balance",
+            accountNumber: accounts[purch.payer_id].account_number, //display
+            merchantName: merchants[purch.merchant_id].name, //display
+            geoCode: merchants[purch.merchant_id].geocode,  //use this
+            confirmedFraud: 0,
+            dateInSeconds: convertDate(purch.purchase_date),
+            distanceFromHome: 55.2420,
+            address: merchants[purch.merchant_id].address
+        };
 
-            //console.log(dp);
-            dataPointDic[dp._id] = dp;
+        //console.log(dp);
+        dataPointDic[dp._id] = dp;
+    }
+
+    for (var i = 0; i < confirmedFraud.length; i++) {
+        //console.log(dp._id + "/" + confirmedFraud[i]);
+        var fdp = dataPointDic[confirmedFraud[i]];
+        if (fdp != null) {
+            fdp.confirmedFraud = 1;
+            confirmedFraudDPs.push(fdp);
+            //console.log("CONFIRMED FRAUD:");
+            //console.log();
+        } else {
+            console.log("WARNING: couldn't find fraud purch " + confirmedFraud[i])
         }
+    }
 
-        for (var i = 0; i < confirmedFraud.length; i++) {
-            //console.log(dp._id + "/" + confirmedFraud[i]);
-            var fdp = dataPointDic[confirmedFraud[i]];
-            if (fdp != null) {
-                fdp.confirmedFraud = 1;
-                confirmedFraudDPs.push(fdp);
-                //console.log("CONFIRMED FRAUD:");
-                //console.log();
-            } else {
-                console.log("WARNING: couldn't find fraud purch " + confirmedFraud[i])
-            }
-        }
-
-        //console.log(Object.keys(dataPointDic));
-        //console.log("LOOKING FOR: " + dataPointDic["58e99ae2ceb8abe24250b988"]._id);
-        //console.log("LOOKING FOR: " + dataPointDic["58e99ae2ceb8abe24250b989"]._id);
-        //console.log("LOOKING FOR: " + dataPointDic["58e99ae2ceb8abe24250b98c"]._id);
-        //console.log("CONFIRMED FRAUD:");
-        //console.log(Object.keys(confirmedFraudDPs));
-        //console.log(confirmedFraudDPs);
-        findCPP();
-        cardsAffected = 0;
-        markPurchasesForMerch(worstSuspect);
-        console.log(getEmailText());
+    //console.log(Object.keys(dataPointDic));
+    //console.log("LOOKING FOR: " + dataPointDic["58e99ae2ceb8abe24250b988"]._id);
+    //console.log("LOOKING FOR: " + dataPointDic["58e99ae2ceb8abe24250b989"]._id);
+    //console.log("LOOKING FOR: " + dataPointDic["58e99ae2ceb8abe24250b98c"]._id);
+    //console.log("CONFIRMED FRAUD:");
+    //console.log(Object.keys(confirmedFraudDPs));
+    //console.log(confirmedFraudDPs);
+    findCPP();
+    cardsAffected = 0;
+    markPurchasesForMerch(worstSuspect);
+    console.log(getEmailText());
     //});
 }
 
@@ -205,7 +205,7 @@ function markPurchasesForMerch(merchant) {
         var purchaseList = purchasesByAccount[ak];
         var comprimised = false;
         for (var i = 0; i < purchaseList.length; i++) {
-            if (purchaseList[i].merchant_id = merchant){
+            if (purchaseList[i].merchant_id = merchant) {
                 comprimised = true;
             }
         }
@@ -214,7 +214,7 @@ function markPurchasesForMerch(merchant) {
                 dataPointDic[purchaseList[i]._id].confirmedFraud = 2;
             }
         }
-        cardsAffected +=1;
+        cardsAffected += 1;
     }
 
     for (var dpk in dataPointDic) {
@@ -225,17 +225,19 @@ function markPurchasesForMerch(merchant) {
 }
 
 function getEmailText() {
-    var sus = merchants[worstSuspect];
-    var text = "Likely credit card data breach at ";
-    text += sus.name + ", " + sus.address.city + ", " + sus.address.state + ". "
-    text += "Up to " + cardsAffected + " cards affected."
+    var sus;
+    var text;
+
+    if (worstSuspect == 'None') {
+    }
+    else {
+        sus = merchants[worstSuspect];
+        text = "Likely credit card data breach at ";
+        text += sus.name + ", " + sus.address.city + ", " + sus.address.state + ". "
+        text += "Up to " + cardsAffected + " cards affected."
+    }
     return text;
 }
-
-
-
-
-
 
 
 function convertDate(date) {
@@ -289,7 +291,6 @@ function deg2rad(deg) {
 //var x = getSampleCluster();
 //console.log(x);
 // var y = findMerchantInfo(x[2]);
-
 
 
 //doAnalysis(exampleFraudReport, function(){return;})

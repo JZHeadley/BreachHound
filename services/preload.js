@@ -51,13 +51,14 @@ function preload(callback) {
                     for (var j = 0; j < returnVals[i].data.length; j++) {
                         merchantDict[returnVals[i].data[j]._id] = returnVals[i].data[j];
                         //console.log(returnVals[i].data[j]);
+
                     }
                 }
 
                 dictionaries['merchants'] = merchantDict;
 
                 var acctIds = Object.keys(accountDict);
-                // console.log("acctIds before insane recursive callback: " + acctIds);
+                // console.log("acctIds before insane recursive c allback: " + acctIds);
                 tmo.insaneRecursiveCallback(acctIds, [], function (returnVals) {
                     //console.log("in getTransactions callback, returnVals: " + returnVals)
                     for (var i = 0; i < returnVals.length; i++) {
