@@ -16,7 +16,6 @@ function leaves(cluster) {
 router.get('/', function (req, res, next) {
     var cluster = clusterfck.hcluster(testData.getPurchases(), analysis.distance(), "single");
     res.send(leaves(cluster));
-    // res.render('index', {title: 'Express'});
 });
 
 module.exports = router;

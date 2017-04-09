@@ -22,6 +22,8 @@ var exampleFraudReport = ["58e9f0b7ceb8abe24250c1f5",
     "58e9f0b8ceb8abe24250c203",
     "58e9f0b8ceb8abe24250c20b",
     "58e9f0b8ceb8abe24250c20c"];
+
+
 function doAnalysis(fraudReport, callback) {
     console.log("FraudReport: " + fraudReport);
     pre.preload(function (hDic) {
@@ -32,12 +34,12 @@ function doAnalysis(fraudReport, callback) {
             var merch = merchants[m];
             try {
                 var x = merch.address.zip;
-            } catch(e) {
+            } catch (e) {
                 console.log("Fixing address");
                 var addr = {
                     zip: "23200",
                     street_number: "2200",
-                    street_name:  "W Grace St",
+                    street_name: "W Grace St",
                     city: "Richmond",
                     state: "VA"
                 };
@@ -45,7 +47,7 @@ function doAnalysis(fraudReport, callback) {
             }
             try {
                 var x = merch.geocode.lat;
-            } catch(e) {
+            } catch (e) {
                 console.log("Fixing geocode");
                 var geocode = {
                     lat: 37.56,
@@ -269,9 +271,12 @@ function getEmailText() {
         text = "Likely credit card data breach at ";
         text += sus.name + ", " + sus.address.city + ", " + sus.address.state + ". "
         text += "The following accounts may be affected: \n"
+        var array_keys = new Array();
         for (var c in affectedCards) {
-            text += c + "\n";
+            // text += c + "\n";
+            array_keys.push(c);
         }
+        text += array_keys.join("\n");
         //text += "Up to " + cardsAffected + " cards affected."
     }
     return text;
@@ -279,7 +284,7 @@ function getEmailText() {
 
 
 function convertDate(date) {
-    parts = date.split("-")
+    parts = date.split("-");
     var d = new Date(parts[0], parts[1], parts[2]);
     return d.getTime();
 }
@@ -330,12 +335,17 @@ function deg2rad(deg) {
 //console.log(x);
 // var y = findMerchantInfo(x[2]);
 
+function getWorstSuspect() {
+    console.log(merchants[worstSuspect].address);
+    return merchants[worstSuspect];
+}
 
 //doAnalysis(exampleFraudReport, function(){return;})
 module.exports = {
     getSampleCluster: getSampleCluster,
     doAnalysis: doAnalysis,
     distance: distance,
+    getWorstSuspect: getWorstSuspect,
     getEmailText: getEmailText
 };
 

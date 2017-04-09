@@ -17,7 +17,9 @@
             <%= purchases[i].merchantName %>
         </td>
         <td>
-            <%= [purchases[i].address.street_number, purchases[i].address.street_name, purchases[i].address.city, purchases[i].address.state].join(" ") %>
+            <%= [purchases[i].address.street_number, purchases[i].address.street_name,
+                purchases[i].address.city, purchases[i].address.state].join(" ") %>
+
         </td>
     </tr>
     <% } %>
