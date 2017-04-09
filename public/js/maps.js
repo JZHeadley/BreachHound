@@ -1,9 +1,7 @@
-
-//initializes map centered and zoomed at a specific point
-
-/* Close when someone clicks on the "x" symbol inside the overlay */
+/* Close when someone clicks on the overlay */
 function closeNav() {
         document.getElementById("tableOverlay").style.width = "40%";
+        document.getElementById("map").style.marginLeft = "40%"
 }
 
 function openNav() {
