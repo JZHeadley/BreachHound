@@ -10,6 +10,7 @@ var confirmedFraudDPs = [];
 
 var worstSuspect = "None";
 var worstCommonality = 0;
+var cardsAffected = 0;
 
 
 var pre = require('../services/preload');
@@ -47,6 +48,7 @@ function doAnalysis(fraudReport, callback) {
         for (var id in dataPointDic) {
             dataPoints.push(dataPointDic[k]);
         }
+        console.log(dataPoints);
         callback(dataPoints);
     });
 }
@@ -151,11 +153,13 @@ function analyze(){
         //console.log("LOOKING FOR: " + dataPointDic["58e99ae2ceb8abe24250b988"]._id);
         //console.log("LOOKING FOR: " + dataPointDic["58e99ae2ceb8abe24250b989"]._id);
         //console.log("LOOKING FOR: " + dataPointDic["58e99ae2ceb8abe24250b98c"]._id);
-        console.log("CONFIRMED FRAUD:");
+        //console.log("CONFIRMED FRAUD:");
         //console.log(Object.keys(confirmedFraudDPs));
-        console.log(confirmedFraudDPs);
+        //console.log(confirmedFraudDPs);
         findCPP();
+        cardsAffected = 0;
         markPurchasesForMerch(worstSuspect);
+        console.log(getEmailText());
     });
 }
 
@@ -174,7 +178,7 @@ function findCPP() {
         }
         //console.log(Object.keys(suspectMerchs) + " are suspect purchases for " + compAcct);
         for (var smid in suspectMerchs) {
-            console.log("FDP merchid: " + smid);
+            //console.log("FDP merchid: " + smid);
             //var suspectMerch = merchants[smid].merchant_id;
             if (merchantCounts[smid] == null) {
                 merchantCounts[smid] = 1;
@@ -210,6 +214,7 @@ function markPurchasesForMerch(merchant) {
                 dataPointDic[purchaseList[i]._id].confirmedFraud = 2;
             }
         }
+        cardsAffected +=1;
     }
 
     for (var dpk in dataPointDic) {
@@ -218,6 +223,20 @@ function markPurchasesForMerch(merchant) {
         }
     }
 }
+
+function getEmailText() {
+    var sus = merchants[worstSuspect];
+    var text = "Likely credit card data breach at ";
+    text += sus.name + ", " + sus.address.city + ", " + sus.address.state + ". "
+    text += "Up to " + cardsAffected + " cards affected."
+    return text;
+}
+
+
+
+
+
+
 
 function convertDate(date) {
     parts = date.split("-")
@@ -273,11 +292,12 @@ function deg2rad(deg) {
 
 
 
-doAnalysis(exampleFraudReport, function(){return;})
+//doAnalysis(exampleFraudReport, function(){return;})
 module.exports = {
     getSampleCluster: getSampleCluster,
     doAnalysis: doAnalysis,
-    distance: distance
+    distance: distance,
+    getEmailText: getEmailText
 };
 
 
