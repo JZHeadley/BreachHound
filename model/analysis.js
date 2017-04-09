@@ -76,7 +76,7 @@ function doAnalysis(fraudReport, callback) {
         for (var id in dataPointDic) {
             dataPoints.push(dataPointDic[id]);
         }
-        console.log("dataPoints: " + dataPoints);
+        //console.log("dataPoints: " + dataPoints);
         callback(dataPoints);
     });
 }
@@ -233,21 +233,25 @@ function markPurchasesForMerch(merchant) {
         var purchaseList = purchasesByAccount[ak];
         var comprimised = false;
         for (var i = 0; i < purchaseList.length; i++) {
-            if (purchaseList[i].merchant_id = merchant) {
+            if (purchaseList[i].merchant_id == merchant) {
                 comprimised = true;
             }
         }
         if (comprimised) {
             for (var i = 0; i < purchaseList.length; i++) {
-                dataPointDic[purchaseList[i]._id].confirmedFraud = 2;
+                if (dataPointDic[purchaseList[i]._id].confirmedFraud != 1) {
+                    dataPointDic[purchaseList[i]._id].confirmedFraud = 2;
+                }
             }
         }
         cardsAffected += 1;
     }
 
     for (var dpk in dataPointDic) {
-        if (dataPointDic[dpk].merchant_id = merchant) {
-            dataPointDic[dpk].confirmedFraud = 3;
+        if (dataPointDic[dpk].merchant_id == merchant) {
+            if (dataPointDic[dpk].confirmedFraud != 1) {
+                dataPointDic[dpk].confirmedFraud = 3;
+            }
         }
     }
 }
