@@ -1,9 +1,40 @@
-//Display all these, sort by account number
+var addressPool = [];
+var merchants = {};
+var merchantsByZipCode = {};
+var accounts = {};
+var purchases = {};
+var customers = {};
+var dataPoints = {};
+var confirmedFraud = [];
+
+
 var pre = require('../services/preload');
-var nessie = require('../services/nessie');
+
+var exampleFraudReport = ["58e99ae2ceb8abe24250b988", "58e99ae2ceb8abe24250b989", "58e99ae2ceb8abe24250b98c"]
+function doAnalysis(fraudReport, callback) {
+    pre.preload(function (hDic) {
+        //console.log(hDic['merchants']['57cf75cea73e494d8675ec5b'].geocode);
+        confirmedFraud = fraudReport;
+        merchants = hDic['merchants'];
+        customers = hDic['customers'];
+        accounts = hDic['accounts'];
+        purchases = hDic['purchases'];
+        //console.log("update TYPEOF purchases" + typeof(purchases))
+        for (var m in merchants) {
+            merch = merchants[m];
+            if (merchantsByZipCode[merch.address.zip] == null) {
+                merchantsByZipCode[merch.address.zip] = [merch];
+            } else {
+                merchantsByZipCode[merch.address.zip].push(merch);
+            }
+        }
+
+        analyze();
+        callback(dataPoints);
+    });
+}
+
 function getSampleCluster() {
-
-
     var p1 = {
         _id: '123456789012345678901234',
         type: "merchant",
@@ -57,14 +88,50 @@ function getSampleCluster() {
     };
     return [p2, p1, p3];
 }
+
+
+
+function analyze(){
+    for (var p in purchases) {
+        var purch = purchases[p];
+        var dp = {
+            _id: purch._id,
+            type: "merchant",
+            merchant_id: purch.merchant_id,
+            payer_id: purch.payer_id,
+            purchase_date: purch.purchase_date, //use this
+            amount: purch.amount,
+            status: "completed",
+            medium: "balance",
+            accountNumber: purch.account_number,  //display
+            merchantName: merchants[purch.merchant_id].name, //display
+            geoCode: merchants[purch.merchant_id].geocode,  //use this
+            confirmedFraud: 0,
+            dateInSeconds: convertDate(purch.purchase_date),
+            distanceFromHome: 55.2420,
+            address: merchants[purch.merchant_id].address
+        };
+        for (var fraudId in confirmedFraud) {
+            if (fraudId = dp._id) {
+                dp.confirmedFraud = 1;
+                console.log("CONFIRMED FRAUD:");
+                console.log(dp);
+            }
+        }
+
+    }
+
+}
+
+
 function convertDate(date) {
     parts = date.split("-")
-    var d = new Date(parts[0], parts[1], part[2]);
+    var d = new Date(parts[0], parts[1], parts[2]);
     return d.getTime();
 }
 // function analyze(arrayOfDictionaries) {
 
-function findMerchantInfo(p) {
+/*function findMerchantInfo(p) {
     var merchantName;
     var merchantLat;
     var merchantLon;
@@ -80,12 +147,7 @@ function findMerchantInfo(p) {
         x.push(merchantLon);
         return x;
     });
-}
-
-function analyze(arrayOfDictionaries){
-    console.log("Array of dictionaries:");
-    console.log(arrayOfDictionaries);
-}
+}*/
 
 function distance(p1, p2) {
     if (p1 !== undefined && p2 !== undefined)
@@ -128,11 +190,18 @@ function getDistanceFromLatLonInKm(coord1, coord2) {
 function deg2rad(deg) {
     return deg * (Math.PI / 180);
 }
+
+//var x = getSampleCluster();
+//console.log(x);
+// var y = findMerchantInfo(x[2]);
+
+
+
+doAnalysis(exampleFraudReport, function(){return;})
 module.exports = {
     getSampleCluster: getSampleCluster,
-    analyze: analyze,
+    doAnalysis: analyze,
     distance: distance
 };
-var x = getSampleCluster();
-console.log(x);
-// var y = findMerchantInfo(x[2]);
+
+
