@@ -22,7 +22,7 @@ function doAnalysis(fraudReport, callback) {
         purchases = hDic['purchases'];
         //console.log("update TYPEOF purchases" + typeof(purchases))
         for (var p in purchases) {
-            var purch = purchaces[p];
+            var purch = purchases[p];
             if (purchasesByAccount[purch.payer_id] == null) {
                 purchasesByAccount[purch.payer_id] = [purch];
             } else {
@@ -35,7 +35,7 @@ function doAnalysis(fraudReport, callback) {
     });
 }
 
-function getSampleCluster() {
+function getSampleCluster(fraudReport, callback) {
     var p1 = {
         _id: '123456789012345678901234',
         type: "merchant",
@@ -87,10 +87,8 @@ function getSampleCluster() {
         distanceFromHome: 55.2420,
         address: "2200 W. Grace St., Richmond, VA 23181"
     };
-    return [p2, p1, p3];
+    callback([p2, p1, p3]);
 }
-
-
 
 function analyze(){
     for (var p in purchases) {
@@ -104,7 +102,7 @@ function analyze(){
             amount: purch.amount,
             status: "completed",
             medium: "balance",
-            accountNumber: purch.account_number,  //display
+            accountNumber: accounts[purch.payer_id].account_number,  //display
             merchantName: merchants[purch.merchant_id].name, //display
             geoCode: merchants[purch.merchant_id].geocode,  //use this
             confirmedFraud: 0,
@@ -112,28 +110,37 @@ function analyze(){
             distanceFromHome: 55.2420,
             address: merchants[purch.merchant_id].address
         };
+
         for (var fraudId in confirmedFraud) {
-            if (fraudId = dp._id) {
+            console.log(dp._id + "/" + fraudId);
+            if (fraudId.valueOf() == dp._id.valueOf()) {
                 dp.confirmedFraud = 1;
                 confirmedFraudDPs.push(dp);
-                console.log("CONFIRMED FRAUD:");
+                //console.log("CONFIRMED FRAUD:");
                 console.log(dp);
             }
         }
         dataPoints.push(dp);
     }
-
+    console.log("CONFIRMED FRAUD:");
+    console.log(confirmedFraudDPs);
+    //findCPP();
 }
 
 
-function findCPPs() {
+function findCPP() {
     var merchantCounts = {};
     for (var fdp in confirmedFraudDPs) {
+        console.log("FDP merchid: " + fdp.merchant_id);
         if (merchantCounts[fdp.merchant_id] == null) {
             merchantCounts[fdp.merchant_id] = 1;
         } else {
             merchantCounts[fdp.merchant_id] += 1;
         }
+    }
+    for (var m in merchantCounts) {
+        console.log("MerchantcountID: "+  m);
+        console.log("Merchant: " + merchants[m].name + ", Commonality: " + merchantCounts[m]);
     }
 }
 
