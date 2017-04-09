@@ -5,7 +5,7 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var multer = require('multer');
-
+var sparkpostKey = "f8f0f04dec34383628500512dc2780b5f358b2e5";
 var index = require('./routes/index');
 var users = require('./routes/users');
 var maps = require('./routes/maps');
