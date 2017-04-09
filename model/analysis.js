@@ -8,8 +8,8 @@ var dataPointDic = {};
 var confirmedFraud = [];
 var confirmedFraudDPs = [];
 
-var worstSusupect = "None";
-var commonality = 0;
+var worstSuspect = "None";
+var worstCommonality = 0;
 
 
 var pre = require('../services/preload');
@@ -149,6 +149,7 @@ function analyze(){
         //console.log(Object.keys(confirmedFraudDPs));
         console.log(confirmedFraudDPs);
         findCPP();
+        markPurchasesForMerch(worstSuspect);
     });
 }
 
@@ -177,20 +178,39 @@ function findCPP() {
         }
 
     }
-    var worstSuspect = "None";
-    var worstCommonality = 0;
+
     for (var m in merchantCounts) {
         //console.log("MerchantcountID: "+  m);
         console.log("Merchant: " + m + ", Commonality: " + merchantCounts[m]);
         if (merchantCounts[m] >= worstCommonality) {
             worstSuspect = m;
+            worstCommonality = merchantCounts[m];
         }
         //console.log("Merchant: " + merchants[m].name + ", Commonality: " + merchantCounts[m]);
     }
 }
 
-function markAllAccountsForMerch(merchant) {
+function markPurchasesForMerch(merchant) {
+    for (var ak in purchasesByAccount) {
+        var purchaseList = purchasesByAccount[ak];
+        var comprimised = false;
+        for (var i = 0; i < purchaseList.length; i++) {
+            if (purchaseList[i].merchant_id = merchant){
+                comprimised = true;
+            }
+        }
+        if (comprimised) {
+            for (var i = 0; i < purchaseList.length; i++) {
+                dataPointDic[purchaseList[i]._id].confirmedFraud = 2;
+            }
+        }
+    }
 
+    for (var dpk in dataPointDic) {
+        if (dataPointDic[dpk].merchant_id = merchant) {
+            dataPointDic[dpk].confirmedFraud = 3;
+        }
+    }
 }
 
 function convertDate(date) {
