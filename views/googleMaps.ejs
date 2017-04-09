@@ -33,7 +33,7 @@
                 points.forEach(function (point) {
                     console.log(point.geoCode);
                     addPoint(point);
-                    if (!point.confirmedFraud === 0)
+                    if (parseInt(point.confirmedFraud) !== 0)
                         heatmapData.push(new google.maps.LatLng(point.geoCode.lat, point.geoCode.lng))
                 })
                 heatmap = new google.maps.visualization.HeatmapLayer({
@@ -58,17 +58,6 @@
                 icon: "/drawables/blueMapMarker.png"
             });
         }
-        function updatePoints(points) {
-            map.clearData();
-
-            points.forEach(function (point) {
-                var marker = new google.maps.Marker({
-                    position: point.geoCode,
-                    map: map,
-                    icon: "/drawables/blueMapMarker.png"
-                })
-            })
-        }
 
 
         $('#uploadForm').ajaxForm(function (e) {
@@ -81,6 +70,14 @@
                 type: 'POST',
                 success: function (response) {
                     console.log(response)
+                    map.clear;
+                    JSON.parse(response).forEach(function (point) {
+                        var marker = new google.maps.Marker({
+                            position: point.geoCode,
+                            map: map,
+                            icon: "/drawables/blueMapMarker.png"
+                        })
+                    })
                 },
                 error: function (response) {
                     alert(response);

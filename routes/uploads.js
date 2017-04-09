@@ -1,6 +1,8 @@
 var express = require('express')
 var router = express.Router();
 var multer = require('multer');
+var anal = require('../model/analysis');
+
 var fileLocation;
 var storage = multer.diskStorage({
     destination: function (req, file, callback) {
@@ -18,9 +20,13 @@ router.post('/', function (req, res, next) {
         if (err) {
             return res.end("Error uploading file.");
         }
-        console.log(fileLocation);
-
-        res.end("" + fileLocation);
+        var fs = require('fs');
+        var text = fs.readFileSync("uploads/" + fileLocation).toString('utf-8')
+        var fraudPoints = text.split("\r\n");
+        anal.doAnalysis(fraudPoints, function (results) {
+            res.end(JSON.stringify(results));
+        });
     })
 });
+
 module.exports = router;
