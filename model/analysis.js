@@ -1,11 +1,12 @@
 var addressPool = [];
 var merchants = {};
-var merchantsByZipCode = {};
+var purchasesByAccount = {};
 var accounts = {};
 var purchases = {};
 var customers = {};
 var dataPoints = [];
 var confirmedFraud = [];
+var confirmedFraudDPs = [];
 
 
 var pre = require('../services/preload');
@@ -20,12 +21,12 @@ function doAnalysis(fraudReport, callback) {
         accounts = hDic['accounts'];
         purchases = hDic['purchases'];
         //console.log("update TYPEOF purchases" + typeof(purchases))
-        for (var m in merchants) {
-            merch = merchants[m];
-            if (merchantsByZipCode[merch.address.zip] == null) {
-                merchantsByZipCode[merch.address.zip] = [merch];
+        for (var p in purchases) {
+            var purch = purchaces[p];
+            if (purchasesByAccount[purch.payer_id] == null) {
+                purchasesByAccount[purch.payer_id] = [purch];
             } else {
-                merchantsByZipCode[merch.address.zip].push(merch);
+                purchasesByAccount[purch.payer_id].push(purch);
             }
         }
 
@@ -114,6 +115,7 @@ function analyze(){
         for (var fraudId in confirmedFraud) {
             if (fraudId = dp._id) {
                 dp.confirmedFraud = 1;
+                confirmedFraudDPs.push(dp);
                 console.log("CONFIRMED FRAUD:");
                 console.log(dp);
             }
@@ -124,30 +126,24 @@ function analyze(){
 }
 
 
+function findCPPs() {
+    var merchantCounts = {};
+    for (var fdp in confirmedFraudDPs) {
+        if (merchantCounts[fdp.merchant_id] == null) {
+            merchantCounts[fdp.merchant_id] = 1;
+        } else {
+            merchantCounts[fdp.merchant_id] += 1;
+        }
+    }
+}
+
+
 function convertDate(date) {
     parts = date.split("-")
     var d = new Date(parts[0], parts[1], parts[2]);
     return d.getTime();
 }
-// function analyze(arrayOfDictionaries) {
 
-/*function findMerchantInfo(p) {
-    var merchantName;
-    var merchantLat;
-    var merchantLon;
-    pre.preload(function (hugeDictionary) {
-        nessie.getMerchant(p.merchant_id, function (merchant) {
-            merchantName = merchant.first_name;
-            merchantLat = merchant.geocode.lat;
-            merchantLon = merchant.geocode.lng;
-        })
-        var x = [];
-        x.push(merchantName);
-        x.push(merchantLat);
-        x.push(merchantLon);
-        return x;
-    });
-}*/
 
 function distance(p1, p2) {
     if (p1 !== undefined && p2 !== undefined)
@@ -200,7 +196,7 @@ function deg2rad(deg) {
 doAnalysis(exampleFraudReport, function(){return;})
 module.exports = {
     getSampleCluster: getSampleCluster,
-    doAnalysis: analyze,
+    doAnalysis: doAnalysis,
     distance: distance
 };
 
