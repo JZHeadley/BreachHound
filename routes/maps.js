@@ -16,11 +16,8 @@ anal.doAnalysis(["58e9f0b8ceb8abe24250c202", "58e9f0b8ceb8abe24250c206", "58e9f0
         res.send(JSON.stringify(results));
     });
     client.transmissions.send({
-        options: {
-            sandbox: true
-        },
         content: {
-            from: 'BreachHound@sparkpostbox.com',
+            from: 'admin@breachhound.jzheadley.com',
             subject: 'Data Breach!',
             html: '<html><body><p>' + anal.getEmailText() + '</p></body></html>'
         },
@@ -29,7 +26,7 @@ anal.doAnalysis(["58e9f0b8ceb8abe24250c202", "58e9f0b8ceb8abe24250c206", "58e9f0
         ]
     })
         .then(data => {
-            // console.log('Woohoo! You just sent your first mailing!');
+            console.log('Woohoo! You just sent your first mailing!');
             console.log(data);
         })
         .catch(err => {
