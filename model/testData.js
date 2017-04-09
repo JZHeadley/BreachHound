@@ -217,6 +217,16 @@ function createCustomers(n) {
     console.log("purchases: " + Object.keys(purchases));
 })*/
 
+function randomAccountWithBlackList() {
+    var blacklist = {}
+    var compromisedCard = accounts[randomKey(accounts)];
+    while (blacklist[compromisedCard._id] != null) {
+        console.log("Blacklisted: " + compromisedCard._id);
+        compromisedCard = accounts[randomKey(accounts)];
+    }
+}
+
+
 function simulateFraud(numCards, cppMerchant_id, exploitZipcode){
     var fraudPurchases = [];
     update(function() {
