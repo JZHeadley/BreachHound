@@ -11,6 +11,7 @@ var confirmedFraudDPs = [];
 var worstSuspect = "None";
 var worstCommonality = 0;
 var cardsAffected = 0;
+var affectedCards = {};
 
 
 var pre = require('../services/preload');
@@ -238,6 +239,7 @@ function markPurchasesForMerch(merchant) {
             }
         }
         if (comprimised) {
+            affectedCards[ak] = "y";
             for (var i = 0; i < purchaseList.length; i++) {
                 if (dataPointDic[purchaseList[i]._id].confirmedFraud != 1) {
                     dataPointDic[purchaseList[i]._id].confirmedFraud = 2;
@@ -266,7 +268,11 @@ function getEmailText() {
         sus = merchants[worstSuspect];
         text = "Likely credit card data breach at ";
         text += sus.name + ", " + sus.address.city + ", " + sus.address.state + ". "
-        text += "Up to " + cardsAffected + " cards affected."
+        text += "The following accounts may be affected: \n"
+        for (var c in affectedCards) {
+            text += c + "\n";
+        }
+        //text += "Up to " + cardsAffected + " cards affected."
     }
     return text;
 }
