@@ -4,7 +4,7 @@ var merchantsByZipCode = {};
 var accounts = {};
 var purchases = {};
 var customers = {};
-var dataPoints = {};
+var dataPoints = [];
 var confirmedFraud = [];
 
 
@@ -118,7 +118,7 @@ function analyze(){
                 console.log(dp);
             }
         }
-
+        dataPoints.push(dp);
     }
 
 }
